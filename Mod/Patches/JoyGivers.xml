@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!-- Les deux batiments de loisir du mod portaient bien un <joyKind>, mais ce champ n'est
+       qu'une etiquette d'affichage : sans JoyGiverDef qui liste le batiment dans <thingDefs>,
+       aucun colon ne s'en approche jamais. Le mod n'a ni JoyGiverDef, ni JobDef, ni assembly.
+
+       POURQUOI DES PATCHS ET NON DE SIMPLES DEFS. Ces defs referencent NSTRDamHaji et
+       NSTRWeaveSpot : sans garde, elles produisent des references croisees non resolues des
+       que Malay est absent. La garde evidente - MayRequire sur la racine de la def - a ete
+       essayee et **ne fonctionne pas ici** : le filtre de ParseAndProcessXML passe par
+       ModLister.AllModsActiveNoSuffix, ce qui va bien pour un DLC (Ludeon.RimWorld.Biotech)
+       mais pas pour un mod d'atelier, dont le packageId porte un suffixe _steam. Resultat
+       mesure en jeu : les quatre defs disparaissaient alors meme que Malay etait actif.
+
+       On garde donc sur ce qui compte vraiment - **l'existence du batiment** - avec le meme
+       PatchOperationConditional que pour les poeles. Plus robuste que n'importe quelle
+       condition sur un identifiant de mod : insensible au suffixe _steam, au renommage, et a
+       une copie locale du mod.
+
+       Les couples giver + driver sont ceux du jeu de base, repris tels quels. -->
+
+  <!-- Dam haji : jeu de plateau. Meme montage que les echecs vanilla (Play_Chess). -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="NSTRDamHaji"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs</xpath>
+      <value>
+
+        <JobDef>
+          <defName>MalayFix_Play_DamHaji</defName>
+          <driverClass>JobDriver_SitFacingBuilding</driverClass>
+          <reportString>playing dam haji.</reportString>
+          <joyDuration>4000</joyDuration>
+          <joyMaxParticipants>2</joyMaxParticipants>
+          <joySkill>Intellectual</joySkill>
+          <joyXpPerTick>0.002</joyXpPerTick>
+          <joyKind>Gaming_Cerebral</joyKind>
+        </JobDef>
+
+        <JoyGiverDef>
+          <defName>MalayFix_Play_DamHaji</defName>
+          <giverClass>JoyGiver_InteractBuildingSitAdjacent</giverClass>
+          <baseChance>2</baseChance>
+          <!-- requireChair a false : a defaut de siege le colon joue debout, plutot que de
+               laisser le plateau inutilise une seconde fois. Le jeu d'Ur vanilla fait pareil. -->
+          <requireChair>false</requireChair>
+          <thingDefs>
+            <li>NSTRDamHaji</li>
+          </thingDefs>
+          <jobDef>MalayFix_Play_DamHaji</jobDef>
+          <joyKind>Gaming_Cerebral</joyKind>
+          <requiredCapacities>
+            <li>Sight</li>
+            <li>Manipulation</li>
+          </requiredCapacities>
+        </JoyGiverDef>
+
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Weave Spot : le mod declare pour lui un type de loisir inedit, NSTRMade_Weave, et c'est
+       ce qu'il a de plus precieux - les attentes reclament jusqu'a 6 types differents et le jeu
+       de base n'en offre que 8. Ce type existait sans aucun fournisseur : il ne comptait pour
+       rien.
+
+       Le batiment declare <hasInteractionCell>, donc on prend le montage du telescope :
+       JoyGiver_InteractBuildingInteractionCell + JobDriver_WatchBuilding (c'est bien le couple
+       de UseTelescope, le telescope n'a pas de driver a lui). Sa case d'interaction est en
+       (0,0,0), donc le colon se tient sur le tapis lui-meme - inhabituel mais praticable, la
+       def ne fixe pas de <passability>. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="NSTRWeaveSpot"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs</xpath>
+      <value>
+
+        <JobDef>
+          <defName>MalayFix_Weave</defName>
+          <driverClass>JobDriver_WatchBuilding</driverClass>
+          <reportString>weaving at TargetA.</reportString>
+          <joyDuration>4000</joyDuration>
+          <joyMaxParticipants>1</joyMaxParticipants>
+          <joySkill>Artistic</joySkill>
+          <joyXpPerTick>0.002</joyXpPerTick>
+          <joyKind>NSTRMade_Weave</joyKind>
+        </JobDef>
+
+        <JoyGiverDef>
+          <defName>MalayFix_Weave</defName>
+          <giverClass>JoyGiver_InteractBuildingInteractionCell</giverClass>
+          <baseChance>2</baseChance>
+          <requireChair>false</requireChair>
+          <thingDefs>
+            <li>NSTRWeaveSpot</li>
+          </thingDefs>
+          <jobDef>MalayFix_Weave</jobDef>
+          <joyKind>NSTRMade_Weave</joyKind>
+          <requiredCapacities>
+            <li>Sight</li>
+            <li>Manipulation</li>
+          </requiredCapacities>
+        </JoyGiverDef>
+
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

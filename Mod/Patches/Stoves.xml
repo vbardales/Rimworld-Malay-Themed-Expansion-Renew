@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!-- Les deux poeles portent :
+         <li Class="VEF.Buildings.RecipeInheritanceExtension">
+       Ce type n'est pas resolu au chargement, et une extension non resolue fait echouer la
+       def ENTIERE : NSTRDapur et NSTRElectricDapur n'existaient tout simplement pas. Par
+       ricochet, les huit recettes malaises qui les citent en <recipeUsers> ne se resolvaient
+       pas non plus - d'ou les 18 a 20 « Could not resolve cross-reference » du journal.
+
+       Les patchs XML s'appliquent au document unifie AVANT l'analyse des defs
+       (LoadedModManager : CombineIntoUnifiedXML -> ApplyPatches -> ParseAndProcessXML),
+       donc retirer le noeud ici suffit a faire charger les deux poeles.
+
+       Ce qu'on perd : l'heritage des recettes des poeles vanilla, c'est-a-dire les recettes
+       que D'AUTRES mods ajoutent a FueledStove / ElectricStove. Les 18 recettes de cuisine
+       vanilla, elles, sont deja listees explicitement dans <recipes> par le mod d'origine :
+       elles ne dependaient pas de l'extension.
+
+       GARDE : chaque retrait est enveloppe dans un PatchOperationConditional teste sur le
+       noeud lui-meme. On garde ainsi sur ce qu'on s'apprete reellement a modifier, plutot
+       que sur la presence du mod - PatchOperationFindMod, lui, compare le *nom affiche* du
+       mod (ModLister.HasActiveModWithName), qui casse au moindre renommage. Consequence
+       voulue : si Malay est absent, ou si son auteur corrige lui-meme le defaut un jour, ce
+       fichier ne fait rien et ne dit rien. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="NSTRDapur"]/modExtensions</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/ThingDef[defName="NSTRDapur"]/modExtensions</xpath>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="NSTRElectricDapur"]/modExtensions</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/ThingDef[defName="NSTRElectricDapur"]/modExtensions</xpath>
+    </match>
+  </Operation>
+
+</Patch>

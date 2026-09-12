@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Malay Themed Expansion - Fix</name>
+  <author>nelim</author>
+  <packageId>nelim.malayfix</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Repairs Malay Themed Expansion (Shanaki97) for RimWorld 1.6. Patch only - it adds no content of its own and contains none of the original mod's files.
+
+What it fixes:
+- The two stoves (Dapur, Electric Dapur) failed to load entirely, because they carry a mod extension whose type cannot be resolved. That single fault also broke all eight Malay cooking recipes, which point at those stoves.
+- The Weave Spot and the dam haji board declared a recreation type but had no recreation giver, so no colonist could ever use them. The Weave Spot's recreation type is a ninth kind that no other mod provides, and it counted for nothing until now.
+
+Known and left alone: one pawn extension is gated on a package id that no longer matches Vanilla Expanded Framework, so its faction-colour tinting never applies. It is cosmetic and it fails silently, so it is not worth the risk of turning on.
+
+Load it after Malay Themed Expansion. Safe to add to an ongoing game.</description>
+  <modDependencies>
+    <li>
+      <packageId>NSTR.Malay.Themed.Expansion</packageId>
+      <displayName>Malay Themed Expansion</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2884249920</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+    <li>NSTR.Malay.Themed.Expansion</li>
+  </loadAfter>
+</ModMetaData>
