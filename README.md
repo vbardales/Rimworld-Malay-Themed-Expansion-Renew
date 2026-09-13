@@ -1,107 +1,129 @@
-# Malay Themed Expansion — Fix
+# Malay Themed Expansion Renew
 
-Répare **Malay Themed Expansion** de Shanaki97 (Steam 2884249920) pour RimWorld 1.6.
+Repairs **Malay Themed Expansion** by Shanaki97 (Steam 2884249920) so that it works on the
+current version of RimWorld.
 
-C'est un **mod de correctifs**, pas une copie : il ne contient aucun fichier du mod d'origine,
-ni texture, ni def reprise. Il se charge après lui et corrige par patch XML.
+It is a **patch mod, not a copy**: it carries no file from the original, neither a texture nor a
+def lifted from it. It loads after it and fixes it with XML patches.
 
-## Ce qui était cassé
+## What was broken
 
-### 1. Les deux cuisinières ne se chargeaient pas du tout
+### 1. Neither stove loaded at all
 
-`NSTRDapur` et `NSTRElectricDapur` portent :
+`NSTRDapur` and `NSTRElectricDapur` carry:
 
 ```xml
 <modExtensions>
   <li Class="VEF.Buildings.RecipeInheritanceExtension">
 ```
 
-Ce type n'est pas résolu au chargement, et **une extension non résolue fait échouer la def
-entière** : les deux cuisinières n'existaient tout simplement pas en jeu.
+That type does not resolve at load, and **an unresolved extension fails the whole def**: the two
+stoves simply did not exist in game.
 
-Le dégât ne s'arrêtait pas là. Les huit recettes malaises (nasi lemak, satay, lemang, ketupat,
-plus leurs versions en lot) désignent ces cuisinières dans leur `<recipeUsers>` — d'où les
-**18 à 20 `Could not resolve cross-reference`** du journal. Autrement dit : *toute la cuisine
-malaise du mod était morte, à cause d'un seul nœud.*
+The damage did not stop there. The eight Malay recipes (nasi lemak, satay, lemang, ketupat, and
+their bulk versions) name those stoves in their `<recipeUsers>`, hence the **18 to 20
+`Could not resolve cross-reference`** lines in the log. In other words: *the mod's entire Malay
+kitchen was dead because of a single node.*
 
-Le correctif retire ce nœud. Les patchs XML s'appliquent au document unifié **avant** l'analyse
-des defs (`CombineIntoUnifiedXML` → `ApplyPatches` → `ParseAndProcessXML`), ce qui permet de
-réparer une def qui, sans ça, ne se chargerait jamais.
+The fix removes only that extension entry, preserving other mod extensions. XML patches apply to the unified document **before** defs are parsed
+(`CombineIntoUnifiedXML` → `ApplyPatches` → `ParseAndProcessXML`), which is what makes it
+possible to repair a def that would otherwise never load.
 
-**Ce qu'on perd :** l'héritage des recettes que *d'autres* mods ajoutent à `FueledStove` /
-`ElectricStove` (Vanilla Cooking Expanded et consorts). Les **18 recettes de cuisine vanilla**,
-elles, sont déjà listées explicitement dans le `<recipes>` du mod d'origine : elles ne
-dépendaient pas de l'extension et ne bougent pas.
+**What is lost:** inheritance of the recipes that *other* mods add to `FueledStove` /
+`ElectricStove` (Vanilla Cooking Expanded and the like). The **18 vanilla cooking recipes** are
+already listed explicitly in the original mod's `<recipes>`: they never depended on the
+extension and do not move.
 
-### 2. Les deux bâtiments de loisir étaient inertes
+### 2. Both recreation buildings were inert
 
-`<building><joyKind>` n'est **qu'une étiquette d'affichage**. Sans `JoyGiverDef` qui liste le
-bâtiment dans `<thingDefs>`, aucun colon ne s'en approche. Le mod n'a ni `JoyGiverDef`, ni
-`JobDef`, ni assembly : le dam haji et le Weave Spot se construisaient et ne servaient à rien.
+`<building><joyKind>` is **only a display label**. Without a `JoyGiverDef` that lists the
+building in its `<thingDefs>`, no colonist ever goes near it. The mod has no `JoyGiverDef`, no
+`JobDef` and no assembly: the dam haji board and the Weave Spot could be built and served no
+purpose.
 
-Le Weave Spot est le plus dommage : le mod lui a créé un **type de loisir inédit**
-(`NSTRMade_Weave`), c'est-à-dire un neuvième type là où le jeu de base n'en a que huit — et les
-attentes en réclament jusqu'à six différents (`ExpectationDef.joyKindsNeeded`). Un type que
-personne ne produit ne compte pour rien.
+The Weave Spot is the greater loss: the mod gave it a **recreation type of its own**
+(`NSTRMade_Weave`), a ninth kind where the base game has eight, and expectations ask for up to
+six different ones (`ExpectationDef.joyKindsNeeded`). A kind nobody produces counts for nothing.
 
-Les couples fournisseur + pilote ajoutés sont ceux du jeu de base, repris tels quels :
+The giver and driver pairs added here are the base game's, taken as they are:
 
-| Bâtiment | Giver | Driver | Modèle vanilla |
+| Building | Giver | Driver | Vanilla model |
 |---|---|---|---|
-| `NSTRDamHaji` | `JoyGiver_InteractBuildingSitAdjacent` | `JobDriver_SitFacingBuilding` | échecs |
-| `NSTRWeaveSpot` | `JoyGiver_InteractBuildingInteractionCell` | `JobDriver_WatchBuilding` | télescope |
+| `NSTRDamHaji` | `JoyGiver_InteractBuildingSitAdjacent` | `JobDriver_SitFacingBuilding` | chess |
+| `NSTRWeaveSpot` | `JoyGiver_InteractBuildingInteractionCell` | `JobDriver_WatchBuilding` | telescope |
 
-## Laissé de côté volontairement
+## Left alone on purpose
 
-Un `PawnKindDefExtension` est conditionné à `MayRequire="OskarPotocki.VFE.Core"`, alors que le
-packageId réel de Vanilla Expanded Framework est `OskarPotocki.VanillaFactionsExpanded.Core`.
-La condition n'étant jamais vraie, l'extension est **silencieusement ignorée** depuis toujours.
-Son effet est purement cosmétique (teinte du torse aux couleurs de la faction), la classe a en
-plus changé de namespace (`VFECore.` → `VEF.Pawns.`), et l'activer reviendrait à réveiller une
-autre extension VEF alors même qu'on répare l'échec d'une première. Rapport bénéfice/risque
-défavorable : on la laisse dormir.
+A `PawnKindDefExtension` is gated on `MayRequire="OskarPotocki.VFE.Core"`, while the real package
+id of Vanilla Expanded Framework is `OskarPotocki.VanillaFactionsExpanded.Core`. The condition is
+never true, so the extension has been **silently ignored** since the day it was written. Its
+effect is purely cosmetic (torso tinted in the faction's colours), the class has moved namespace
+on top of that (`VFECore.` → `VEF.Pawns.`), and switching it on would mean waking a second VEF
+extension at the very moment we are repairing the failure of a first. The trade is not worth it:
+it stays asleep.
 
-## Les gardes
+## The guards
 
-Les deux volets du correctif sont protégés, chacun par le mécanisme adapté à sa nature :
+The stove patch checks for the exact recipe-inheritance extension before removing it;
+other extensions and explicit recipes are preserved. It is inert when that entry is absent.
 
-- **Les patchs** sont enveloppés dans un `PatchOperationConditional` testé sur le nœud
-  lui-même. On garde donc sur ce qu'on s'apprête réellement à modifier. C'est plus robuste que
-  `PatchOperationFindMod`, qui compare le *nom affiché* du mod
-  (`ModLister.HasActiveModWithName`) et casse au moindre renommage. Effet voulu : si Malay est
-  absent — ou si son auteur corrige lui-même le défaut un jour — ce fichier ne fait rien et ne
-  dit rien.
-- **Les defs de loisir** sont elles aussi injectées par patch, gardées de la même façon sur
-  l'existence du bâtiment. Sans garde, leurs `<li>NSTRDamHaji</li>` produiraient des
-  références croisées non résolues dès que Malay n'est pas là.
+The recreation patches require the target building and no existing JoyGiverDef serving it.
+They preserve an existing job with the same defName and add only the missing provider.
+This avoids duplicates when another XML mod already supplies the recreation or when these
+patches are applied twice. A provider created later by another mod still needs integration testing.
+### Historical investigation of `MayRequire`
 
-### Pourquoi pas `MayRequire` sur les defs
+The following was recorded during the original investigation and has not been reproduced on the current package. With
+`MayRequire="NSTR.Malay.Themed.Expansion"` on the def roots, all four defs vanished *while Malay
+was active* — Joy Rescue went from "all served" to "2 orphans", which is what caught it.
 
-C'était la garde évidente, et **elle ne marche pas ici**. Essayée, mesurée en jeu : avec
-`MayRequire="NSTR.Malay.Themed.Expansion"` sur les racines de def, les quatre defs
-disparaissaient *alors même que Malay était actif* — Joy Rescue est passé de « tous desservis »
-à « 2 orphelins », ce qui a servi de détecteur.
+The filter lives in `LoadedModManager.ParseAndProcessXML` and goes through
+`ModLister.AllModsActiveNoSuffix`. That fits a DLC (`Ludeon.RimWorld.Biotech`), but not a
+Workshop mod, whose package id carries a `_steam` suffix.
 
-Le filtre vit dans `LoadedModManager.ParseAndProcessXML` et passe par
-`ModLister.AllModsActiveNoSuffix`. Ça convient pour un DLC (`Ludeon.RimWorld.Biotech`), mais pas
-pour un mod d'atelier, dont le packageId porte un suffixe `_steam`.
+Guarding on the building's existence is better regardless: it is immune to the `_steam` suffix,
+to a rename of the mod, and to a local copy rather than a subscription. It tests what we
+actually want to know — "is this building here?" — rather than an identifier that stands in
+for it.
 
-Garder sur l'existence du bâtiment est de toute façon meilleur : c'est insensible au suffixe
-`_steam`, au renommage du mod, et à une copie locale plutôt qu'abonnée. On teste ce qu'on veut
-vraiment savoir — « ce bâtiment est-il là ? » — plutôt qu'un identifiant qui en est le proxy.
+Worth noting in passing: the author of Malay fell into a variant of the same trap with his
+`MayRequire="OskarPotocki.VFE.Core"`, a package id that never matched anything.
 
-Note au passage : l'auteur de Malay est tombé dans une variante du même piège avec son
-`MayRequire="OskarPotocki.VFE.Core"`, packageId qui n'a jamais correspondu à rien.
+## Relationship with Joy Rescue
 
-## Rapport avec Joy Rescue
-
-Les deux sont indépendants et se complètent sans se marcher dessus. Joy Rescue détecte les
-bâtiments de loisir orphelins **de toute la liste de mods** et fabrique leurs fournisseurs à la
-volée ; comme ce correctif-ci fournit les siens en dur, Joy Rescue les voit desservis et n'y
-touche pas. C'est d'ailleurs un bon test croisé : avec les deux actifs, Joy Rescue doit
-annoncer « nothing to rescue ».
+Joy Rescue is an optional integration, pending current in-game validation. It detects
+orphaned recreation buildings **across the whole mod list** and builds their givers on the fly;
+since this fix supplies its own outright, Joy Rescue sees them served and leaves them alone. It
+doubles as a cross-check: with both active, Joy Rescue must report "nothing to rescue".
 
 ## Licence
 
-Le correctif est sous MIT. Il ne redistribue rien du mod d'origine, dont les droits restent à
-son auteur.
+The fix is under MIT. It redistributes nothing from the original mod, whose rights remain with
+its author.
+
+## Validation and development
+
+The distribution is Mod/. No C# compilation is needed. There are no useful player settings:
+these are fixed repairs, so no empty mod-options page or MainButtons shortcut is provided.
+English job reports are native Def values; French translations are in Languages/French.
+
+Run the automated XML/DOM regression suite from the repository root:
+
+    pwsh -File Tests/Run-Tests.ps1
+
+The suite requires the installed upstream 1.6 XML; use -Upstream to override its Defs path.
+Tests/RESULTS.md records the tested working-tree hashes and fixture hashes.
+The suite verifies patch transformations, idempotence, absent/already-fixed targets,
+translation tokens and distribution metadata; it does not run RimWorld's game loop.
+
+Run the shared translation verifier with both this Mod/ and upstream 1.6/ as Targets.
+Tests/translation-check.txt records the latest output. TEST_SCENARIOS.md describes
+the pending final in-game validation in English and French, including an existing save.
+
+Art/preview.html loads Art/preview-palette.json and the preserved Preview-source.png.
+Art/render-preview.cjs requires Node.js, Playwright and Chrome; set NODE_PATH as appropriate
+for the installed modules. Tests/Check-Preview.py requires Python and Pillow.
+Run the renderer and contrast check after changing the composition, then Run-Tests.ps1
+to refresh the final delivered-file hashes. Art/Preview-before-renew.png archives the old banner.
+
+See ATTRIBUTION.md for studied third-party work and the licence boundary.

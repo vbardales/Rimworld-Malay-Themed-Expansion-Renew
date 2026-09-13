@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Malay Themed Expansion - Fix</name>
+  <name>Malay Themed Expansion Renew</name>
   <author>nelim</author>
-  <packageId>nelim.malayfix</packageId>
+  <packageId>nelim.malaythemedexpansionrenew</packageId>
+  <url>https://github.com/vbardales/Rimworld-Malay-Themed-Expansion-Renew</url>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
@@ -14,7 +15,11 @@ What it fixes:
 
 Known and left alone: one pawn extension is gated on a package id that no longer matches Vanilla Expanded Framework, so its faction-colour tinting never applies. It is cosmetic and it fails silently, so it is not worth the risk of turning on.
 
-Load it after Malay Themed Expansion. Safe to add to an ongoing game.</description>
+Load it after Malay Themed Expansion. Designed for existing saves; final in-game validation of this renamed package is pending.
+
+Original mod by Shanaki97. Independent repair by nelim; not endorsed by the original author. Requires the original mod and redistributes none of its files.
+
+[url=https://github.com/vbardales/Rimworld-Malay-Themed-Expansion-Renew]Source code on GitHub[/url]</description>
   <modDependencies>
     <li>
       <packageId>NSTR.Malay.Themed.Expansion</packageId>

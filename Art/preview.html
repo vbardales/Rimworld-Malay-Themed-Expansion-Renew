@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Malay Themed Expansion Renew</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:896px;height:504px;overflow:hidden}
+body{font-family:"Segoe UI",system-ui,sans-serif;background:url("Preview-source.png") center/cover}
+#veil{position:absolute;inset:0;background:radial-gradient(ellipse 780px 590px at top left,color-mix(in srgb,var(--veil) 94%,transparent) 0%,color-mix(in srgb,var(--veil) 85%,transparent) 40%,transparent 100%)}
+#copy{position:absolute;left:50px;top:54px;color:var(--inkPrimary);text-shadow:0 3px 10px rgba(0,0,0,.75)}
+h1{margin:0;width:380px;font-size:46px;font-weight:600;line-height:1.1;letter-spacing:0}
+h1 span{font-size:.65em;color:var(--inkSecondary)}
+#rule{width:58px;height:3px;background:var(--accent);margin-top:20px;margin-bottom:16px}
+p{margin:0;width:430px;font-size:21px;line-height:1.45;font-weight:400}
+#badge{position:absolute;right:0;top:0;width:80px;height:80px;background:var(--accent);clip-path:polygon(0 0,100% 0,100% 100%)}
+#version{position:absolute;left:869px;top:27px;transform:translate(-50%,-50%) rotate(45deg);font-size:26px;line-height:1;font-weight:700;color:var(--badgeInk)}
+</style>
+<div id="veil"></div><div id="copy"><h1>Malay Themed<br>Expansion <span>Renew</span></h1><div id="rule"></div><p>Restores Malay cooking<br>and recreation.</p></div><div id="badge"></div><div id="version">1.6</div>
+<script>
+window.ready=fetch("preview-palette.json").then(r=>r.json()).then(async p=>{
+for(const [key,value] of Object.entries(p))document.documentElement.style.setProperty("--"+key,value);
+await document.fonts.ready;return p;
+});
+</script></html>
