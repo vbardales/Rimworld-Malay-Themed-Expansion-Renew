@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
   <name>Malay Themed Expansion Renew</name>
-  <author>nelim</author>
+  <author>Nelim</author>
   <packageId>nelim.malaythemedexpansionrenew</packageId>
   <url>https://github.com/vbardales/Rimworld-Malay-Themed-Expansion-Renew</url>
   <supportedVersions>
@@ -17,7 +17,7 @@ Known and left alone: one pawn extension is gated on a package id that no longer
 
 Load it after Malay Themed Expansion. Designed for existing saves; final in-game validation of this renamed package is pending.
 
-Original mod by Shanaki97. Independent repair by nelim; not endorsed by the original author. Requires the original mod and redistributes none of its files.
+Original mod by Shanaki97. Independent repair by Nelim; not endorsed by the original author. Requires the original mod and redistributes none of its files.
 
 [url=https://github.com/vbardales/Rimworld-Malay-Themed-Expansion-Renew]Source code on GitHub[/url]</description>
   <modDependencies>

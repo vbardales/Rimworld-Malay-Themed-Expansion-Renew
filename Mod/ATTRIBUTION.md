@@ -2,7 +2,7 @@
 
 ## Malay Themed Expansion Renew
 
-The XML repair implementation is by nelim, copyright 2026, and is distributed under
+The XML repair implementation is by Nelim, copyright 2026, and is distributed under
 the MIT licence in LICENSE. The repository's workflow classification is **open** for
 this implementation. Its public repository distributes a separate patch requiring
 the original mod; it does not distribute the original mod.
@@ -27,7 +27,7 @@ The installed upstream metadata declares RimWorld 1.6 support. The previous
 A future change that incorporates upstream content requires a fresh rights review.
 
 This is an independent, unofficial repair and is not endorsed by Shanaki97.
-If the original author requests its removal, nelim undertakes to take it down promptly.
+If the original author requests its removal, Nelim undertakes to take it down promptly.
 
 ## RimWorld and other integrations
 
