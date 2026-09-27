@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## [0.1.0] - 2026-09-27
+
+Creation of a Workshop file ID. The item was created private, from the `Mod/` content of
+this version, and is not yet tested in game.
+
 - Recompose the preview with the current title, distinct secondary/accent colours and 1.6 badge.
 - Add French job reports and the final source-code link in the English description.
 - Limit stove removal to the problematic extension and preserve unrelated extensions.
