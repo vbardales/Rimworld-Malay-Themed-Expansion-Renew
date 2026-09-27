@@ -13,13 +13,13 @@ licence_at:   LICENSE and ATTRIBUTION.md; MIT applies only to this patch
 dependencies: declared
 showcase:     complete
 tested_on:    2026-08-29
-workshop:
+workshop:     3806768309 (0.1.0 only: item created private, not tested, not public)
 settings_audit: not_applicable
 licence_audit: complete
 automated_tests: complete
 xml_tests: complete
 runtime_validation: unverified
-audit_revision: 78f402810619d6fafd5e4709ca1d4350d8228711
+audit_revision: 5a4e6c6
 remaining:
   - unverified: Current delivered identity has not been validated in game in French and English.
   - unverified: the run in game predates the rename. It was done as
@@ -309,3 +309,50 @@ tests are not applicable because no settings exist. The historical tested_on dat
 history only. Native game UI control is not available through this session's enabled
 computer-use surface, which supports browsers; in-game verification requires an interactive
 RimWorld session and must not be replaced with these static results.
+
+## Audit — 2026-09-27, applying AUDIT.md
+
+Revision at the start of this pass: `f36a205`. Working tree carried one untracked file,
+`Mod/About/PublishedFileId.txt` (`3806768309`), the trace of a Workshop item created outside
+this session. No second RimWorld instance was launched, and none was needed: everything below
+is off-game.
+
+**0.1.0 recorded.** Per AUDIT.md's `prepublished → published` section, a prepublication can
+happen at any point in the chain and proves nothing beyond "the item exists". Committed
+`Mod/About/PublishedFileId.txt` on its own (`5a4e6c6`, "Add published Workshop file ID for
+0.1.0") and opened `CHANGELOG.md` with `## [0.1.0] - 2026-09-27`. The item is private, as every
+new Steam item is, and untested; this does not move `stage`.
+
+**`done → tested` re-checked against the three new criteria.** No `@wip` scenario exists —
+there is no Gherkin suite at all, `TEST_SCENARIOS.md` is plain-English. No `@requires:` scenario
+exists either, so there is none left un-run. And every manual check that remains
+(`TEST_SCENARIOS.md`, status "NOT RUN") is still exactly that: a manual check, not automated,
+not yet performed. None of the three surfaced a defect; they confirm the gate was already
+correctly held at `done`, not past it. `stage` stays `done`.
+
+**Evidence.** No `Tests/Pickle/Evidence/` or `evidence/` folder exists — no Pickle pass has
+ever been requested for this mod — so there was nothing to trim on disk or remove from git.
+Added both patterns to `.gitignore` pre-emptively, and a short "Evidence retention" note to
+the new `TESTING.md`, so a future pass has somewhere to read the rule before it produces its
+first report.
+
+**`.dds`.** None tracked, none on disk (`git ls-files`, `find`, both empty). Added `*.dds` to
+`.gitignore` anyway, since this mod's textures are PNG and a `.dds` appearing later would mean
+an unconverted import, not something to ship.
+
+**Origin repository.** Checked whether Malay Themed Expansion has a public source repository
+to build this patch from or send a pull request to, per PUBLISHING.md's "Départ depuis le
+projet d'origine". A web search turned up only the Steam Workshop page; no GitHub or other code
+host was found for Shanaki97's mod. Recorded in `ATTRIBUTION.md`. The patch-mod approach this
+repository already took is the one PUBLISHING.md prescribes for this case.
+
+**Duplicated `ATTRIBUTION.md`.** `Mod/ATTRIBUTION.md` had drifted from the root copy (missing
+the provenance-check paragraph added this session); recopied.
+
+**Documents read.** Logged file-by-file in `docs/PROTOCOLS-READ.md`, revision and usefulness
+per document, per `Rimworld-Ticket-Dispatcher/docs/WELCOME.md` point 5. One found modified but
+uncommitted upstream, `WORKSHOP_COMMENTS.md` — another session's in-progress edit, unrelated to
+this mod, left untouched.
+
+No defect found in any of the above. Nothing here changes `stage`, `settings_audit`,
+`licence_audit`, `automated_tests` or `xml_tests`: their evidence stands as recorded above.

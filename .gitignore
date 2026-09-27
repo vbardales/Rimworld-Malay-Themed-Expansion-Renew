@@ -15,3 +15,13 @@
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Test evidence. Kept on disk for whoever holds this mod, never in git: screenshots and
+# Player.log copies grow without limit. Tests/RESULTS.md is the short summary that stays
+# versioned. See STATUS.md, "Evidence retention".
+Tests/Pickle/Evidence/
+evidence/
+
+# Uncompressed textures. This mod ships PNG only; a .dds here would mean a texture
+# imported without conversion, never something to distribute or track.
+*.dds

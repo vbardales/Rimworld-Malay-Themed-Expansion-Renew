@@ -29,6 +29,11 @@ A future change that incorporates upstream content requires a fresh rights revie
 This is an independent, unofficial repair and is not endorsed by Shanaki97.
 If the original author requests its removal, Nelim undertakes to take it down promptly.
 
+**Provenance check (2026-09-27).** No public source repository for Malay Themed Expansion
+was found: a web search for Shanaki97's mod turned up its Steam Workshop page and no GitHub
+or other code host. Starting from, or contributing a pull request to, the original project's
+own history was therefore not possible, and this patch mod's history starts fresh instead.
+
 ## RimWorld and other integrations
 
 RimWorld is by Ludeon Studios. Its vanilla recreation definitions were studied as
