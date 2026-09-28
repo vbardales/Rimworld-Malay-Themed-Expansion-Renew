@@ -1,0 +1,44 @@
+# TEST_SCENARIOS.md 2: each Malay meal and its bulk variant, and one vanilla meal, cooked at the wood stove the repair
+# brought back. The stove is spawned finished and fuelled, and the research the recipes ask for is marked done: what is
+# under test is that the recipes are offered, taken up and produce, not the construction or the research queue.
+#
+# NOT covered here, and left to TEST_SCENARIOS.md 2 by hand: the ELECTRIC stove cooking (it needs a power net, and the
+# only claim the repair makes about it is that its def and recipe list load, asserted in 01), and the recipes other mods
+# add to the vanilla stoves, which the repair deliberately stopped inheriting.
+Feature: the Malay stove cooks
+
+  Background:
+    Given the save "test-colony" is loaded
+
+  @slow @timeout:280
+  Scenario Outline: a cook fills the <recipe> bill at the Malay stove
+    Given research "NSTR_Malay_Food" is finished
+    And a colonist "Cook" exists
+    And "Cook" has childhood "ShopKid36"
+    And "Cook" has backstory "Blacksmith7"
+    Then "Cook" can do "Cooking"
+    Given "Cook" skill "Cooking" is set to level 10
+    When I create a stockpile from (150, 160) to (152, 162)
+    And 100 "RawRice" is spawned at the stockpile
+    And 60 "Meat_Muffalo" is spawned at the stockpile
+    And I spawn a "NSTRDapur" at (146, 156)
+    And Malay Themed Expansion Renew: the "NSTRDapur" is fuelled
+    And I set "Cook" priority "Cooking" to 1
+    And I add bill "<recipe>" to the "NSTRDapur" at (146, 156)
+    Then the "NSTRDapur" has 1 bills
+    Given game speed is ultrafast
+    When I wait for bill "<recipe>" to finish
+    Then a "<product>" exists
+    And no errors were logged
+
+    Examples:
+      | recipe                | product       |
+      | NSTRCookNasiLemak     | NSTRNasiLemak |
+      | NSTRCookNasiLemakBulk | NSTRNasiLemak |
+      | NSTRCookSatay         | NSTRSatay     |
+      | NSTRCookSatayBulk     | NSTRSatay     |
+      | NSTRCookLemang        | NSTRLemang    |
+      | NSTRCookLemangBulk    | NSTRLemang    |
+      | NSTRCookKetupat       | NSTRKetupat   |
+      | NSTRCookKetupatBulk   | NSTRKetupat   |
+      | CookMealSimple        | MealSimple    |

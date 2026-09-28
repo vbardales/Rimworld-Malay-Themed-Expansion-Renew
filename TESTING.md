@@ -6,11 +6,7 @@
   last run. This is the report to keep versioned; it is the short summary AGENTS.md asks for.
 - `TEST_SCENARIOS.md` — eight plain-English functional scenarios for a person to run in game
   (new colony and existing save, English and French). Status: not run since the rename.
-- No Pickle (Gherkin) suite yet. Nothing in this mod needs a running game to observe beyond
-  what `TEST_SCENARIOS.md` already asks for by hand: two stoves and two recreation buildings,
-  their recipes and jobs, and the translated job reports. If a suite is written later, it
-  belongs in `Tests/Pickle/`, follows `PickleTools/Authoring/README.md`, and runs through
-  `Rimworld-Ticket-Dispatcher/scripts/Submit-PickleRun.ps1`, never launched directly.
+- `Tests/Pickle/` - the Pickle (Gherkin) suite, written 2026-09-28: eight features, one step assembly, three passes (minimal English, minimal French, Joy Rescue). `Tests/Pickle/README.md` says which scenario of `TEST_SCENARIOS.md` runs where and what no scenario covers (electric stove cooking, a save written before the patch). Scenarios 6 and 8 are offline by design.
 
 ## Evidence retention
 
@@ -22,5 +18,4 @@ Only two things about a test run are worth keeping on disk, and only one of thos
   `Tests/Pickle/Evidence/` or `evidence/`, both `.gitignore`d. Delete what a newer run
   supersedes; never let old evidence accumulate once its `STATUS.md` reference is gone.
 
-Nothing today falls in the "kept on disk, not in git" category: this mod has never run a
-Pickle pass, so there is no `Tests/Pickle/Evidence/` folder yet.
+Keep per pass: `summary.json`, `junit.xml`, `Player.log` and the `@review` captures that were opened. Delete `report.html`, `messages.ndjson` and failure captures once superseded.

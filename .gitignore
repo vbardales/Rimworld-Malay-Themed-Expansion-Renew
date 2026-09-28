@@ -25,3 +25,6 @@ evidence/
 # Uncompressed textures. This mod ships PNG only; a .dds here would mean a texture
 # imported without conversion, never something to distribute or track.
 *.dds
+
+# Step assembly intermediates, outside the test mod folder.
+.build/
