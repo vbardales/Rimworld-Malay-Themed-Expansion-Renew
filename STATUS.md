@@ -10,6 +10,7 @@ detached:     yes
 stage:        done
 licence:      open
 licence_at:   LICENSE and ATTRIBUTION.md; MIT applies only to this patch
+upstream_mod_remotes: N/A
 dependencies: declared
 showcase:     complete
 tested_on:    2026-08-29
