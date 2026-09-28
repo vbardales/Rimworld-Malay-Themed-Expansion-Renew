@@ -37,7 +37,7 @@ namespace MalayThemedExpansion.PickleSteps
             {
                 ledger = ctx.Get<Ledger>();
             }
-            catch (Exception)
+            catch (InvalidOperationException)
             {
                 // nothing remembered yet in this scenario
             }
