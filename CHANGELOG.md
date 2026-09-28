@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Drop the `renew` suffix from the package ID: `nelim.malaythemedexpansionrenew` becomes
+  `nelim.malaythemedexpansion`. The displayed name and repository keep `Renew`.
+
 ## [0.1.0] - 2026-09-27
 
 Creation of a Workshop file ID. The item was created private, from the `Mod/` content of

@@ -3,7 +3,7 @@ localization: complete
 translation_en: complete
 translation_fr: complete
 mod:          Malay Themed Expansion Renew
-packageId:    nelim.malaythemedexpansionrenew
+packageId:    nelim.malaythemedexpansion
 repo:         Rimworld-Malay-Themed-Expansion-Renew
 visibility:   public
 detached:     yes

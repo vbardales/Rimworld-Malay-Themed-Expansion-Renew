@@ -48,7 +48,7 @@ Apply-Patches $partial
 Assert ($partial.SelectNodes('/Defs/JobDef').Count -eq 1 -and $partial.SelectSingleNode('/Defs/JobDef/reportString').InnerText -eq 'existing report') 'Existing job preserved'
 Assert ($partial.SelectNodes('/Defs/JoyGiverDef').Count -eq 1) 'Only present building receives a giver'
 $about=[xml](Get-Content (Join-Path $mod 'About/About.xml') -Raw)
-Assert ($about.ModMetaData.packageId -eq 'nelim.malaythemedexpansionrenew') 'Current package ID'
+Assert ($about.ModMetaData.packageId -eq 'nelim.malaythemedexpansion') 'Current package ID'
 Assert ($about.ModMetaData.modDependencies.li.packageId -contains 'NSTR.Malay.Themed.Expansion') 'Malay dependency declared'
 Assert ($about.ModMetaData.description.Trim().EndsWith('[url='+$about.ModMetaData.url+']Source code on GitHub[/url]')) 'Exact final repository link'
 $translation=[xml](Get-Content (Join-Path $mod 'Languages/French/DefInjected/JobDef/MalayFix.xml') -Raw)
