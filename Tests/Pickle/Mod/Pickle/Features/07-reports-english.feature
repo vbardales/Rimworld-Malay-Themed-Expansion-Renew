@@ -11,6 +11,7 @@ Feature: the job reports in English
     Given a colonist "Reader-1" exists
     And "Reader-1" needs "Joy" is set to 10 percent
     And I spawn a "NSTRDamHaji" at (146, 158)
+    And game speed is ultrafast
     When Malay Themed Expansion Renew: the joy giver "MalayFix_Play_DamHaji" sends "Reader-1" to the "NSTRDamHaji"
     Then Malay Themed Expansion Renew: "Reader-1" is using the "NSTRDamHaji" for the job "MalayFix_Play_DamHaji"
     And Malay Themed Expansion Renew: the job report of "Reader-1" contains "playing dam haji"
@@ -20,6 +21,7 @@ Feature: the job reports in English
     Given a colonist "Reader-2" exists
     And "Reader-2" needs "Joy" is set to 10 percent
     And I spawn a "NSTRWeaveSpot" at (146, 162)
+    And game speed is ultrafast
     When Malay Themed Expansion Renew: the joy giver "MalayFix_Weave" sends "Reader-2" to the "NSTRWeaveSpot"
     Then Malay Themed Expansion Renew: "Reader-2" is using the "NSTRWeaveSpot" for the job "MalayFix_Weave"
     And Malay Themed Expansion Renew: the job report of "Reader-2" contains "weaving at"

@@ -5,6 +5,11 @@
 # NOT covered here, and left to TEST_SCENARIOS.md 2 by hand: the ELECTRIC stove cooking (it needs a power net, and the
 # only claim the repair makes about it is that its def and recipe list load, asserted in 01), and the recipes other mods
 # add to the vanilla stoves, which the repair deliberately stopped inheriting.
+#
+# Rest and Food are topped up before the wait (found 2026-09-29, first run): at ultrafast speed 120 real seconds of
+# "I wait for bill to finish" runs long enough in game time for night to fall, and a colonist whose rest or hunger
+# need is not full is put to bed or sent to eat by the schedule before the bill is ever picked up. All nine cases
+# failed identically the first time, screenshot showing every colonist asleep well past midnight.
 Feature: the Malay stove cooks
 
   Background:
@@ -18,6 +23,8 @@ Feature: the Malay stove cooks
     And "Cook" has backstory "Blacksmith7"
     Then "Cook" can do "Cooking"
     Given "Cook" skill "Cooking" is set to level 10
+    And "Cook" needs "Rest" is set to 100 percent
+    And "Cook" needs "Food" is set to 100 percent
     When I create a stockpile from (150, 160) to (152, 162)
     And 100 "RawRice" is spawned at the stockpile
     And 60 "Meat_Muffalo" is spawned at the stockpile
