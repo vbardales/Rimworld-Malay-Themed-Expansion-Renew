@@ -10,6 +10,11 @@
 # "I wait for bill to finish" runs long enough in game time for night to fall, and a colonist whose rest or hunger
 # need is not full is put to bed or sent to eat by the schedule before the bill is ever picked up. All nine cases
 # failed identically the first time, screenshot showing every colonist asleep well past midnight.
+#
+# Topping up the needs alone did not fix it (found 2026-09-29, second run): the timetable sends a pawn to bed or
+# the table by the hour, not by need level, so a full Rest need still gets overridden once the wait crosses into a
+# Sleep block. All nine cases failed identically again, screenshot showing the same colonists asleep. The colonist
+# is now also pinned to Anything for the full 24 hours.
 Feature: the Malay stove cooks
 
   Background:
@@ -25,6 +30,7 @@ Feature: the Malay stove cooks
     Given "Cook" skill "Cooking" is set to level 10
     And "Cook" needs "Rest" is set to 100 percent
     And "Cook" needs "Food" is set to 100 percent
+    And Malay Themed Expansion Renew: "Cook" is scheduled to work all day
     When I create a stockpile from (150, 160) to (152, 162)
     And 100 "RawRice" is spawned at the stockpile
     And 60 "Meat_Muffalo" is spawned at the stockpile

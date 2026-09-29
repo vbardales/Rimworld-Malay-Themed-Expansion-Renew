@@ -234,6 +234,24 @@ namespace MalayThemedExpansion.PickleSteps
                 $"{givers.Count} joy giver(s) serve {buildingDefName}: {string.Join(", ", givers)}; expected {expected}");
         }
 
+        // ------------------------------------------------------------------ schedule
+
+        /// <summary>
+        /// Needs at full do not stop the schedule sending a pawn to bed or the table: the timetable owns that
+        /// decision by the hour, not the need level. A long ultrafast wait crosses into a Sleep or Meal block
+        /// regardless, so the wait scenarios pin the colonist to Anything for the full day first.
+        /// </summary>
+        [Given("Malay Themed Expansion Renew: {string} is scheduled to work all day")]
+        public void ScheduledToWorkAllDay(PickleContext ctx, string nickname)
+        {
+            Pawn pawn = Colonist(ctx, nickname);
+            ctx.Assert(pawn.timetable != null, $"{nickname} has no timetable");
+            for (int hour = 0; hour < 24; hour++)
+            {
+                pawn.timetable.SetAssignment(hour, TimeAssignmentDefOf.Anything);
+            }
+        }
+
         // ------------------------------------------------------------------ the stove
 
         [Given("Malay Themed Expansion Renew: the {string} is fuelled")]
