@@ -1,7 +1,7 @@
 ---
 localization: complete
 translation_en: complete
-translation_fr: complete
+translation_fr: partial
 mod:          Malay Themed Expansion Renew
 packageId:    nelim.malaythemedexpansion
 repo:         Rimworld-Malay-Themed-Expansion-Renew
@@ -27,6 +27,7 @@ remaining:
     `Malay Themed Expansion - Fix` / `nelim.malayfix`, and nothing has loaded the mod under its
     new name and package id since. No def of this mod is named by another, so nothing should
     follow, but it has not been seen.
+  - unverified: French review by Virginie
 session:      local_4b16682a-f4a1-429c-a418-e5ffce21e6c8
 updated:      2026-09-13, evidence-based workflow audit
 ---
@@ -357,3 +358,29 @@ this mod, left untouched.
 
 No defect found in any of the above. Nothing here changes `stage`, `settings_audit`,
 `licence_audit`, `automated_tests` or `xml_tests`: their evidence stands as recorded above.
+
+## Translation audit — 2026-09-30, French gender-agreement rule
+
+`translation_fr` was reset to `unchecked` by the 2026-09-30 change to TRANSLATIONS.md section 3
+(the three-segment gender switch, and the requirement that only Virginie's own reading can mark
+French `complete`). Redid the French pass under the new rule; revision `94430a6`.
+
+**Inventory.** No Keyed folder, no grammar files, no translatable Def label/description in this
+mod (it only removes modExtensions and adds JoyGiverDef/JobDef entries). The only player-facing
+text is the two job reportStrings already recorded in the 2026-09-13 translation audit above:
+`MalayFix_Play_DamHaji.reportString` and `MalayFix_Weave.reportString`, both covered by
+`Mod/Languages/French/DefInjected/JobDef/MalayFix.xml`.
+
+**Gender switch.** Read both French strings against the new rule: `joue au dam haji.` and
+`tisse sur TargetA.` are each a bare present-tense verb plus complement, with no adjective,
+past participle or noun agreeing with the pawn. Neither needs the three-segment switch. No
+defect found.
+
+**Review file.** Generated `FRENCH_REVIEW.md` at the mod root with `Tests/Generate-FrenchReview.ps1`,
+which reads `Mod/Patches/JoyGivers.xml` and the French DefInjected file directly, so the table
+cannot drift from the shipped XML. Re-run it after either file changes.
+
+`translation_fr` set to `partial`: the inventory and gender-switch checks pass, but per
+TRANSLATIONS.md section 3 the field cannot reach `complete` until Virginie has read
+`FRENCH_REVIEW.md` herself; this session does not and cannot perform that review. Added
+"unverified: French review by Virginie" to `remaining`.
