@@ -118,7 +118,7 @@ translation tokens and distribution metadata; it does not run RimWorld's game lo
 
 Run the shared translation verifier with both this Mod/ and upstream 1.6/ as Targets.
 Tests/translation-check.txt records the latest output. TEST_SCENARIOS.md describes
-the pending final in-game validation in English and French, including an existing save.
+the functional scenarios; `Tests/Pickle/` plays them in the game and `TESTING.md` lists the passes, the evidence kept and what is not applicable.
 
 Art/preview.html loads Art/preview-palette.json and the preserved Preview-source.png.
 Art/render-preview.cjs requires Node.js, Playwright and Chrome; set NODE_PATH as appropriate

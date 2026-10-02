@@ -8,6 +8,7 @@ repo:         Rimworld-Malay-Themed-Expansion-Renew
 visibility:   public
 detached:     yes
 stage:        done
+workflow_stage: done
 licence:      open
 licence_at:   LICENSE and ATTRIBUTION.md; MIT applies only to this patch
 upstream_mod_remotes: N/A
@@ -20,16 +21,19 @@ licence_audit: complete
 automated_tests: complete
 xml_tests: complete
 runtime_validation: unverified
-audit_revision: 5a4e6c6
+audit_revision: d8d900f
 remaining:
-  - unverified: Current delivered identity has not been validated in game in French and English.
-  - unverified: the run in game predates the rename. It was done as
-    `Malay Themed Expansion - Fix` / `nelim.malayfix`, and nothing has loaded the mod under its
-    new name and package id since. No def of this mod is named by another, so nothing should
-    follow, but it has not been seen.
-  - unverified: French review by Virginie
-session:      local_4b16682a-f4a1-429c-a418-e5ffce21e6c8
-updated:      2026-09-13, evidence-based workflow audit
+  - unverified: Pickle `02-cooking` red, 9 of 9 scenarios, on `db588fa` and again on `94430a6`
+    (English and French): "no NSTRNasiLemak was made; the map held 0 before and 0 after", the vanilla
+    `CookMealSimple` too, the cook idle outside the room in the capture. Cause not established (suite
+    setup or mod). `done -> tested` stays closed until each is replayed green.
+  - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
+    it, so it replays in the final non-regression pass.
+  - unverified: electric stove cooking and a save from before the patch are not played; listed not
+    applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
+  - unverified: French review by Virginie (`FRENCH_REVIEW.md`)
+session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
+updated:      2026-10-02, audit applying AUDIT.md (5a975b5)
 ---
 
 # Malay Themed Expansion Renew — status
@@ -384,3 +388,62 @@ cannot drift from the shipped XML. Re-run it after either file changes.
 TRANSLATIONS.md section 3 the field cannot reach `complete` until Virginie has read
 `FRENCH_REVIEW.md` herself; this session does not and cannot perform that review. Added
 "unverified: French review by Virginie" to `remaining`.
+
+## Audit — 2026-10-02, applying AUDIT.md (`5a975b5`)
+
+Revision at the start: `d8d900f`, tree clean. Off-game checks only; no RimWorld was launched. Old
+status `done`, retained status `done`, `workflow_stage: done`.
+
+**0.1.0.** `Mod/About/PublishedFileId.txt` (`3806768309`) is committed (`5a4e6c6`), and `CHANGELOG.md`
+opens with `## [0.1.0]`, "Creation of a Workshop file ID". The item is private and untested. It does
+not move `stage`. It was created under the old package id `nelim.malaythemedexpansionrenew`; the
+current one is `nelim.malaythemedexpansion`, still unreleased in the changelog.
+
+**Transitions replayed.**
+- `options -> l10n`, against TRANSLATIONS.md `af8427f`: two `reportString` fields, no counted noun,
+  no pawn agreement, no Keyed key. French DefInjected covers both, `TargetA` kept. `FRENCH_REVIEW.md`
+  was regenerated with the shared `scripts/Make-FrenchReview.ps1` (heading and layout of the current
+  rule); it replaces the mod's own `Tests/Generate-FrenchReview.ps1`, removed. The English text
+  lives in `french-review-english.json` because the script reads English from `Mod/Defs`, which
+  this patch mod does not have. `translation_fr` stays `partial` until Virginie reads it.
+- `l10n -> preTest`: `About.xml` unchanged since the 2026-09-13 audit. `modDependencies` names only
+  Malay Themed Expansion; VEF stays in `loadAfter` because no class or def of this mod references
+  it. No `LoadFolders.xml`.
+- `preTest -> done`: `Tests/Run-Tests.ps1` replayed, 37 checks passed; `Tests/Pickle/Check-Steps.ps1`
+  replayed, all 154 step lines resolve to one expression (its default path pointed at a
+  pre-`1.6/` Pickle layout; fixed to `1.6\Assemblies`). The Pickle suite is written and its
+  scope is justified in `Tests/Pickle/README.md`.
+
+**`done -> tested`, the three criteria.** No `@wip` scenario. The one `@requires:` scenario
+(`nelim.joyrescue`) has run, in its own pass, but on `690cad2`, before two step changes: to replay.
+Manual checks: the two halves not played (electric stove, pre-patch save) are listed not
+applicable with reasons in `TESTING.md`; no manual check is left to tick. Not met: the nine
+`02-cooking` scenarios are red, so the gate stays closed. This does not move `stage`: it
+needs the game, so it sits in `remaining`.
+
+**Reports read.** `db588fa` and `94430a6` (English, French): `exitReason: failed`, 19 scenarios
+played, 10 passed, 9 failed, all nine in `02-cooking`. `setName: sans-facultatifs`. `@review`
+captures opened and read: English "Weaving at wooden Weave Spot (normal).", French "Tisse sur Weave
+Spot en bois (normal)." (the building label is the upstream one). The capture of a failed cooking
+scenario shows the cook standing idle outside the building ("1 colonist idle") and the three other colonists asleep.
+
+**Evidence.** Nothing was tracked in git (`git log --all` on `Evidence`/`.dds` is empty). On disk
+413 MB became 13 MB: the two `db588fa` reports deleted (superseded), `report.html`,
+`messages.ndjson` and the other captures deleted from the kept ones. Kept per pass: `summary.json`,
+`junit.xml`, `Player.log`, the opened `@review` captures, one failed cooking capture, and the older
+`joyrescue-690cad2` report (sole proof of that scenario). The keep rule is in `TESTING.md` and
+`Tests/Pickle/README.md`. One line per run is in `docs/runs/history.md`. No `pickle-reports-archive`
+folder belongs to this mod.
+
+**`.dds`.** None tracked, none on disk; `*.dds` stays ignored. Added `Mod/**/*.ico` to `.gitignore`.
+
+**Origin repository.** Searched again on 2026-10-02: Malay Themed Expansion (Shanaki97) has only its
+Workshop page, no code repository. `upstream_mod_remotes: N/A` stands, and there is no pull request
+to make.
+
+**Gallery.** `Art/steam/00-preview.png` moved to `Art/Gallery/0-preview.png`, byte-identical to
+`Mod/About/Preview.png`, per the current PUBLISHING.md numbering.
+
+**Reserves, not blockers.** `Art/Preview.ico` (2026-09-27) is older than `Preview.png`
+(2026-09-29, badge added): the local folder icon shows the previous composition. The `Mod/` and root
+`desktop.ini` and both `.ico` targets exist.

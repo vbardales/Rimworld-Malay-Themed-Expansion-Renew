@@ -28,3 +28,6 @@ evidence/
 
 # Step assembly intermediates, outside the test mod folder.
 .build/
+
+# Explorer folder icons belong beside Mod/, never inside it: Steam uploads Mod/ unfiltered.
+Mod/**/*.ico

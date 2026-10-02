@@ -1,41 +1,45 @@
 # Protocols read by this mod's session
 
-One line per document: the revision read, and whether it changed anything here. Re-read at
-the start of a session and after a context compaction; update this file rather than trusting
-memory of an older pass.
+One line per document: the revision read, and whether it helped here. Re-read at the start of a
+session and after a context compaction; update this file rather than trusting memory of an older
+pass. Last full read: 2026-10-02, session `local_bd2333eb-933a-48f0-afa2-98d553a01809`.
 
-## Protocols (`vbardales/Rimworld-protocols`, read through the monorepo work tree)
+Revisions of the protocol documents come from `../rimworld-protocols.git` (the monorepo's own
+`git log` reports the commit that removed them, see `WELCOME.md` point 5).
 
-| File | Revision read | Useful here? |
-|---|---|---|
-| `AGENTS.md` | `3a1d2cb`, 2026-09-24 | Yes — settings/translations/preTest gate order. |
-| `AUDIT.md` | `c5ca0c0`, 2026-09-26 | Yes — the whole chain, applied below. |
-| `PUBLISHING.md` | `0747b40`, 2026-09-26 | Yes — description link, licence suffixes, `.gitignore`/`.gitattributes` model, "start from the origin's repo" rule. |
-| `TRANSLATIONS.md` | `f5c2d9d`, 2026-09-25 | Partially — this mod owns one DefInjected file, no settings, no code strings; the rest (plurals, custom XML fields) does not apply. |
-| `STYLE_RIMWORLD.md` | `7311308`, 2026-09-25 | No new work — Preview/ModIcon were already produced under an earlier revision; nothing here changed the artwork. |
-| `MOD_SETTINGS.md` | `b83933b`, 2026-09-23 | Yes, but the answer is short: no settings, already recorded as `not_applicable`. |
-| `WORKSHOP_COMMENTS.md` | `785c5a5`, 2026-09-26, **plus an uncommitted edit in the working tree at read time** (another session adding rows; not this mod's business) | Not yet — no `PUBLICATION.md` exists here (that arrives at `tested → prepublished`), and the one relevant row (2884249920, Malay Themed Expansion) is already `drafted` from Joy Rescue. |
-| `scripts/SEARCHING.md` | `372c447`, 2026-09-23 | No — nothing to search across the Workshop corpus for this patch. |
-
-## Tools (`PickleTools/`, `Rimworld-Release-Admin/`)
+## Protocols
 
 | File | Revision read | Useful here? |
 |---|---|---|
-| `PickleTools/README.md` | `c771bef`, 2026-09-25 | No — this mod has no Pickle suite; its scenarios are the plain-English kind in `TEST_SCENARIOS.md`. |
-| `PickleTools/Headless/README.md` | `ed4e73a`, 2026-09-26 | No — same reason; kept for when/if a Pickle suite is written. |
-| `PickleTools/docs/steps.md` | `cba3ca1`, 2026-09-25 | No — no suite to write steps for. |
-| `Rimworld-Release-Admin/docs/OPERATIONS.md` | `3c03f51`, 2026-09-26 | Not yet — this mod has no CI workflow; relevant once it reaches `tested → prepublished`. |
+| `AGENTS.md` | `7fd7475`, 2026-09-29 | Yes: gate order, evidence keep rule, CI publishing guards. |
+| `AUDIT.md` | `5a975b5`, 2026-10-02 | Yes: the whole chain, applied in `STATUS.md`. New since last read: `@wip`, `@requires:` and manual-test criteria for `tested`, "do not test what the mod does not change", pass ordering, WSL cleanup at `published`. |
+| `PUBLISHING.md` | `4e44398`, 2026-10-02, **plus an uncommitted edit** | Yes: gallery folder `0-` numbering, origin-repo PR rule, packageId without `renew`, description source. |
+| `TRANSLATIONS.md` | `af8427f`, 2026-10-02 | Yes: French review file format, `scripts/Make-FrenchReview.ps1`. The gender and plural rules do not apply (two bare-verb strings). |
+| `MOD_SETTINGS.md` | `b83933b`, 2026-09-23 | Short answer: no settings, `not_applicable`. Unchanged. |
+| `STYLE_RIMWORLD.md` | `4e44398`, 2026-10-02, **plus an uncommitted edit** | Skimmed headings only; Preview and ModIcon were produced earlier and nothing here changed them. Re-read when the Preview is regenerated. |
+| `WORKSHOP_COMMENTS.md` | `4e44398`, 2026-10-02, **plus an uncommitted edit** | Not yet: comments are written at `tested -> prepublished`. |
+| `scripts/SEARCHING.md` | `50de695`, 2026-09-28 | No: nothing to search across the Workshop for this patch. |
 
-## Queue (`Rimworld-Ticket-Dispatcher/`)
+## Tools
 
 | File | Revision read | Useful here? |
 |---|---|---|
-| `docs/WELCOME.md` | `d07b2b8`, 2026-09-26 | Not yet — no Pickle run has been requested for this mod. |
-| `docs/SUBMIT.md` | `d07b2b8`, 2026-09-26 | Not yet, same reason. |
+| `PickleTools/README.md` | `ff20d89`, 2026-09-29, **plus an uncommitted edit** | Table only; this suite uses no PickleTools companion. |
+| `PickleTools/Headless/README.md` | `ed4e73a`, 2026-09-26 | Not re-read; unchanged since the suite was written. |
+| `PickleTools/docs/steps.md` | `da7c3b0`, 2026-09-28, **plus an uncommitted edit** | Not re-read; `Check-Steps.ps1` checks the suite against the live catalogue. |
+| `Rimworld-Release-Admin/docs/OPERATIONS.md` | `3c03f51`, 2026-09-26 | Not yet: no CI workflow before `tested -> prepublished`. |
+
+## Queue
+
+| File | Revision read | Useful here? |
+|---|---|---|
+| `Rimworld-Ticket-Dispatcher/docs/WELCOME.md` | `77ca9d7`, 2026-09-27 | Yes: filter terms, pass maps, evidence deletion (`robocopy`/`\?\`), no-artefact-in-`Mod/` rule. |
+| `Rimworld-Ticket-Dispatcher/docs/SUBMIT.md` | `d07b2b8`, 2026-09-26 | Yes for the next request: `-EvidenceDir` is never overwritten, the label carries the SHA. |
 
 ## This mod's own documents
 
-`STATUS.md`, `README.md`, `CHANGELOG.md`, `ATTRIBUTION.md`, `LICENSE`, `TEST_SCENARIOS.md` and
-`Mod/About/About.xml` were all read in full during this session (2026-09-27). No `PUBLICATION.md`,
-`TESTING.md` before this session, `BACKLOG.md`, `NOTES.md`, `BUGS.md` or `docs/runs/` existed yet.
-`TESTING.md` was created this session; see `STATUS.md`, "Evidence retention".
+Read in full on 2026-10-02: `STATUS.md`, `README.md`, `CHANGELOG.md`, `ATTRIBUTION.md`, `LICENSE`,
+`TESTING.md`, `TEST_SCENARIOS.md`, `FRENCH_REVIEW.md`, `Mod/About/About.xml`, `Tests/Pickle/README.md`,
+`Tests/RESULTS.md`, `docs/runs/history.md`. Absent, so nothing to read: `PUBLICATION.md` (arrives at
+`tested -> prepublished`), `BACKLOG.md` (no origin repository, so no pull request to track), `NOTES.md`,
+`BUGS.md`.

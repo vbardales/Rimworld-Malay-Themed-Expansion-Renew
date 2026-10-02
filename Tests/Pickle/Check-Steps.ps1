@@ -26,7 +26,7 @@
   powershell.exe -NoProfile -ExecutionPolicy Bypass -File Tests/Pickle/Check-Steps.ps1
 #>
 param(
-    [string]$PickleAssemblies = 'C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3791648678\Assemblies',
+    [string]$PickleAssemblies = 'C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3791648678\1.6\Assemblies',
     [string]$Cecil = "$env:USERPROFILE\.nuget\packages\mono.cecil\0.11.5\lib\net40\Mono.Cecil.dll"
 )
 $ErrorActionPreference = 'Stop'

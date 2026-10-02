@@ -6,7 +6,7 @@
   `nelim.malaythemedexpansion`. The displayed name and repository keep `Renew`.
 - Add the ModIcon, cut out of its black background, to the bottom-left corner of the preview,
   tilted 15 degrees, flush against both edges. Start the Workshop gallery with
-  `Art/steam/00-preview.png`, a copy of the preview.
+  `Art/Gallery/0-preview.png`, a copy of the preview.
 
 ## [0.1.0] - 2026-09-27
 

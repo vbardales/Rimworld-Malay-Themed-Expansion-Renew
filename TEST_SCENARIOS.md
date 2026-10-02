@@ -1,8 +1,11 @@
 # Final functional validation
 
-Status: NOT RUN for the current package. Run each scenario in English and French on
-RimWorld 1.6 with Core, Harmony, Vanilla Expanded Framework, Malay Themed Expansion,
-then Malay Themed Expansion Renew. Record exact versions, save, language, logs and outcome.
+Status, 2026-10-02: these scenarios are no longer run by hand. Pickle plays them in the game
+(see `Tests/Pickle/README.md`), the rest is offline or not applicable (see `TESTING.md`). Last
+Pickle result, revision `94430a6`: scenarios 1, 3, 4, 5 and the French and English reports green;
+scenario 2 (cooking) red, cause not established; scenario 7 green on an older revision, to replay.
+Details per run in `docs/runs/history.md`. The two halves that are not played, the electric stove
+and a save from before the patch, are listed as not applicable in `TESTING.md`.
 
 1. **New colony / loading.** Preconditions: fresh test colony, dependencies enabled in
    the stated order. Actions: start a new game, open build menus and inspect the log.

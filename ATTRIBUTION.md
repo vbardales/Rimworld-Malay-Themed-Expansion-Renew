@@ -33,6 +33,7 @@ If the original author requests its removal, Nelim undertakes to take it down pr
 was found: a web search for Shanaki97's mod turned up its Steam Workshop page and no GitHub
 or other code host. Starting from, or contributing a pull request to, the original project's
 own history was therefore not possible, and this patch mod's history starts fresh instead.
+Checked again on 2026-10-02 with the same result.
 
 ## RimWorld and other integrations
 
