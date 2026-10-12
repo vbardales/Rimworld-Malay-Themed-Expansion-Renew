@@ -1,13 +1,13 @@
 ---
 localization: complete
 translation_en: complete
-translation_fr: partial
+translation_fr: complete
 mod:          Malay Themed Expansion Renew
 packageId:    nelim.malaythemedexpansion
 repo:         Rimworld-Malay-Themed-Expansion-Renew
 visibility:   public
 detached:     yes
-workflow_stage: writeTests[0.1.0]
+workflow_stage: playTests[0.1.0]
 licence:      open
 licence_at:   LICENSE and ATTRIBUTION.md; MIT applies only to this patch
 upstream_mod_remotes: N/A
@@ -30,10 +30,9 @@ remaining:
     it, so it replays in the final non-regression pass.
   - unverified: electric stove cooking and a save from before the patch are not played; listed not
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
-  - defect: `translation_fr` is `partial`: Virginie has not read `FRENCH_REVIEW.md` (AUDIT.md 6.g, 7.g). This holds the mod at `writeTests`; only her reading can clear it.
 session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
-updated:      2026-10-12, audit applying AUDIT.md (340e28e)
-protocols_read_sha: 90d6bad3c972d13b710e7d30e52621fe91d273d7
+updated:      2026-10-12, French review validated by Virginie, writeTests -> playTests
+protocols_read_sha: 7e2994b43fb5b05d704694cbedc2e08ce4ea08e2
 ---
 
 # Malay Themed Expansion Renew — status
@@ -104,6 +103,8 @@ stays. This file cut from 30 KB to the current state, history summarised below.
 
 **Not a downgrade cause.** Pickle `02-cooking` red (9 of 9) and the Joy Rescue replay need the game: they
 belong to `playTests`, listed `unverified` in `remaining`.
+
+**Follow-up, same day.** Virginie validated the French (`FRENCH_REVIEW.md` Review line, 2026-10-12, texts from `340e28e`, no correction). `translation_fr: complete`; 7.g met; `workflow_stage` moves to `playTests[0.1.0]`. Open: Pickle `02-cooking` red, Joy Rescue replay, both need the game.
 
 ## History, condensed
 
