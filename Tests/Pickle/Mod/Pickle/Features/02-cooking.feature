@@ -15,6 +15,8 @@
 # the table by the hour, not by need level, so a full Rest need still gets overridden once the wait crosses into a
 # Sleep block. All nine cases failed identically again, screenshot showing the same colonists asleep. The colonist
 # is now also pinned to Anything for the full 24 hours.
+# 2026-10-12: the generated "Cook" stood idle at the map edge in the 88947ba capture, far from the stove (the stove-faction
+# fix alone did not cure it). The suite now drives the save's own colonist Jet, as Eden Garden's bill scenarios do.
 Feature: the Malay stove cooks
 
   Background:
@@ -23,21 +25,20 @@ Feature: the Malay stove cooks
   @slow @timeout:280
   Scenario Outline: a cook fills the <recipe> bill at the Malay stove
     Given research "NSTR_Malay_Food" is finished
-    And a colonist "Cook" exists
-    And "Cook" has childhood "ShopKid36"
-    And "Cook" has backstory "Blacksmith7"
-    Then "Cook" can do "Cooking"
-    Given "Cook" skill "Cooking" is set to level 10
-    And "Cook" needs "Rest" is set to 100 percent
-    And "Cook" needs "Food" is set to 100 percent
-    And Malay Themed Expansion Renew: "Cook" is scheduled to work all day
+    Then "Jet" can do "Cooking"
+    Given "Jet" skill "Cooking" is set to level 10
+    And "Jet" needs "Rest" is set to 100 percent
+    And "Jet" needs "Food" is set to 100 percent
+    And Malay Themed Expansion Renew: "Jet" is scheduled to work all day
     When I create a stockpile from (150, 160) to (152, 162)
     And 100 "RawRice" is spawned at the stockpile
     And 60 "Meat_Muffalo" is spawned at the stockpile
     And I spawn a "NSTRDapur" at (146, 156)
     And Malay Themed Expansion Renew: the "NSTRDapur" belongs to the colony
     And Malay Themed Expansion Renew: the "NSTRDapur" is fuelled
-    And I set "Cook" priority "Cooking" to 1
+    And I set "Jet" priority "Cooking" to 1
+    And I set "Jet" priority "Hauling" to 0
+    And I set "Jet" priority "Cleaning" to 0
     And I add bill "<recipe>" to the "NSTRDapur" at (146, 156)
     Then the "NSTRDapur" has 1 bills
     Given game speed is ultrafast
