@@ -7,8 +7,7 @@ packageId:    nelim.malaythemedexpansion
 repo:         Rimworld-Malay-Themed-Expansion-Renew
 visibility:   public
 detached:     yes
-stage:        done
-workflow_stage: done
+workflow_stage: writeTests[0.1.0]
 licence:      open
 licence_at:   LICENSE and ATTRIBUTION.md; MIT applies only to this patch
 upstream_mod_remotes: N/A
@@ -21,19 +20,20 @@ licence_audit: complete
 automated_tests: complete
 xml_tests: complete
 runtime_validation: unverified
-audit_revision: d8d900f
+audit_revision: 340e28e
 remaining:
   - unverified: Pickle `02-cooking` red, 9 of 9 scenarios, on `db588fa` and again on `94430a6`
     (English and French): "no NSTRNasiLemak was made; the map held 0 before and 0 after", the vanilla
     `CookMealSimple` too, the cook idle outside the room in the capture. Cause not established (suite
-    setup or mod). `done -> tested` stays closed until each is replayed green.
+    setup or mod). the `playTests` gate stays closed until each is replayed green.
   - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
     it, so it replays in the final non-regression pass.
   - unverified: electric stove cooking and a save from before the patch are not played; listed not
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
-  - unverified: French review by Virginie (`FRENCH_REVIEW.md`)
+  - defect: `translation_fr` is `partial`: Virginie has not read `FRENCH_REVIEW.md` (AUDIT.md 6.g, 7.g). This holds the mod at `writeTests`; only her reading can clear it.
 session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
-updated:      2026-10-02, audit applying AUDIT.md (5a975b5)
+updated:      2026-10-12, audit applying AUDIT.md (340e28e)
+protocols_read_sha: 90d6bad3c972d13b710e7d30e52621fe91d273d7
 ---
 
 # Malay Themed Expansion Renew — status
@@ -85,365 +85,38 @@ but a living source, `forbidden` a written refusal, `original` owing nothing to 
 `remaining`: `feature` for something missing from a first release, `defect` for a known fault
 left unfixed, `unverified` for what could not be checked.
 
-## Workflow audit — 2026-09-13
+## Audit — 2026-10-12, applying AUDIT.md (`340e28e`)
 
-This section supersedes the earlier conclusions without erasing their historical evidence.
-Audit scope: C:/Users/nelim/Documents/rimworld/MalayFix, standalone Git root;
-distributed content: Mod/. HEAD is 78f402810619d6fafd5e4709ca1d4350d8228711.
-Before this audit, About.xml and README.md were staged modifications and STATUS.md had
-both staged and unstaged modifications. The audit changes only the working copy of STATUS.md;
-the index and other files are preserved. The delivered patches and images are unchanged
-from HEAD; the name, packageId and URL in About.xml are local staged changes.
+Working tree at the start: only artwork changes (`Art/*.ico`, `Art/Gallery/0-preview.png`,
+`Mod/About/Preview.png`, untracked `Art/.render/`, `Art/echo.png`, ...), left untouched. No RimWorld
+launched, none needed.
 
-### Stage interpretation and ordered gates
+**Old `done` (maps to `playTests`) -> retained `writeTests[0.1.0]`.** The first failing transition is
+`writeTests -> playTests`, criterion 7.g (AUDIT.md 6.g): `translation_fr` is `partial` because Virginie has
+not read `FRENCH_REVIEW.md`. A session never marks its own French as reviewed. Everything else in 7.a-7.f
+holds: eight scenarios in `TEST_SCENARIOS.md`, `Tests/Run-Tests.ps1` replayed today (37 checks pass),
+the Pickle suite written with its scope justified in `Tests/Pickle/README.md`, local scripts declared in
+`scripts/LOCAL_SCRIPTS.md`.
 
-Previous stage: tested. Retained stage: dansMonoRepo, the initial workflow floor because
-the first transition is incomplete. This is a cumulative readiness label, NOT a claim that
-the repository is still physically in the monorepo. detached: yes remains correct.
-The literal stage vocabulary is now:
-dansMonoRepo -> horsMonoRepo -> ModIcon générée -> Preview générée -> preOptions ->
-options -> l10n -> preTest -> done -> tested. Independent later checks are retained below.
+**Changes.** Field `stage` removed (retired 2026-10-09). `Art/render-preview.cjs` deleted: the shared
+`scripts/Render-Preview.cjs` replaces it (LOCAL_SCRIPTS.md, Audit 2026-10-11); `Art/Preview.config.json`
+stays. This file cut from 30 KB to the current state, history summarised below.
 
-| Transition | Result | Evidence / outstanding requirement |
-| --- | --- | --- |
-| dansMonoRepo -> horsMonoRepo | Defect found | Standalone root and GitHub origin verified. Read-only git ls-remote returned HEAD 78f4028; gh repo view returned PUBLIC and the exact configured repository URL. STATUS and English README exist, and both MIT LICENSE copies are identical. ATTRIBUTION.md and CHANGELOG.md are absent. The historical alive/public exception conflicts with PUBLISHING.md and does not establish the requested licence classification. |
-| horsMonoRepo -> ModIcon générée | Partially validated independently | XML-only distribution: no C# project or DLL to build. PNG is 128 x 128, 18,603 bytes, directly inspected; the mascot is recognizable. No build is applicable. Implementation readiness is not fully certified by the limited patch checks below. |
-| ModIcon générée -> Preview générée | Artifact validated independently | PNG is 896 x 504, 633,823 bytes, below 1 MB. Direct inspection found a high oblique view, tiled floor, warm subject lighting and no detailed faces; no concrete camera defect. No historical generation report is required. |
-| Preview générée -> preOptions | Defect found | Preview still says “Malay Themed Expansion - Fix”, whereas About.xml says Renew. No reduced secondary-colour Renew suffix or version badge is present. The amber rule is visible, but the required accent/secondary hierarchy is absent. English description exists but does not end with the required Steam-formatted Source code on GitHub link. |
-| preOptions -> options | Not applicable justified | See settings inventory below; this independent gate passes. |
-| options -> l10n | Defect found | Native English report strings are present and translatable; both French translations are missing. |
-| l10n -> preTest | Dependency declarations validated independently | Installed upstream About.xml confirms NSTR.Malay.Themed.Expansion, with support for 1.6 and its own required VEF/Harmony dependencies. This patch correctly requires Malay and loads after it. No direct VEF/Harmony class is added by this mod. VEF loadAfter is ordering, not a new direct dependency. No local LoadFolders or version/optional patch folders exist. |
-| preTest -> done | Incomplete | No maintained test suite, test results or full functional scenario document in this repository. Audit XML parsing and the bounded DOM exercise below passed their stated checks, but do not establish a complete automated regression suite or game-engine patch execution. |
-| done -> tested | Non verified | Historical 2026-08-29 run retained as history only. No current in-game run, logs review, FR/EN display check, new-game or existing-save execution was performed in this audit. |
+**Not a downgrade cause.** Pickle `02-cooking` red (9 of 9) and the Joy Rescue replay need the game: they
+belong to `playTests`, listed `unverified` in `remaining`.
 
-### Rights and identity
+## History, condensed
 
-The root and distributed MIT notices cover the author's own work; they do not license Malay.
-The existing alive claim and its public exception are retained above as historical statements,
-not approved by this audit. The installed upstream metadata explicitly includes 1.6, so absence
-of 1.6 support cannot justify a silent classification from this local copy. Remote upstream
-permission statements and the exact provenance boundary have not been verified here.
-Before passing horsMonoRepo, document a justified classification for the actual distributed
-work, distinguish upstream rights, and reconcile visibility/mentions with that decision.
-Do not assume either upstream permission or an explicit prohibition from missing evidence.
-ATTRIBUTION is required also for studied third-party work, as the README explicitly describes.
-
-About name, packageId and GitHub repository describe the same mod. The actual folder remains
-MalayFix; the historical claim that all four identifiers were renamed is inaccurate.
-A descriptive legacy folder alias is not, by itself, a naming defect or a reason to rename it.
-
-### Settings audit
-
-Inventory of the entire distributed tree: two unconditional repair policies guarded by target
-existence, no configurable state, serialization, source assembly, ModSettings implementation,
-settings page, MainButtonDef or configuration shortcut. Stove repair and missing recreation
-providers implement the advertised fixed repairs; no useful player setting was identified.
-The joy constants are implementation data, not a documented manual configuration interface.
-No empty page or shortcut can be registered by the delivered files.
-settings_audit: not_applicable is justified by this behavior inventory and source inspection.
-UI defaults, entry limits, settings persistence and RIMMSQOL integration tests are not applicable;
-no integration is claimed tested. As specified by the audit prompt, no in-game settings
-verification is required to pass this no-settings gate.
-
-### Translation audit
-
-The two added JobDefs own the only new player-facing strings:
-- JobDef / MalayFix_Play_DamHaji.reportString: “playing dam haji.”
-- JobDef / MalayFix_Weave.reportString: “weaving at TargetA.”
-
-Both are native translatable reportString fields, with nonempty English source values.
-English DefInjected duplication is unnecessary. TargetA is a job-report substitution token;
-a French translation must preserve it. No Languages folder or French entries exist.
-Expected coverage is Languages/French/DefInjected/JobDef/*.xml with these two paths.
-No injection file currently exists to validate with Check-DefInjected.ps1; path execution in
-the engine remains unverified. No owned Keyed strings, interpolation, settings text or
-MainButtons text were found. About metadata and technical comments are outside this gate.
-localization and translation_en are complete for the static inventory; translation_fr is
-partial for the two missing entries. This does not certify runtime display in either language.
-
-### Controls executed and limits
-
-Read AGENTS.md, PUBLISHING.md, STYLE_RIMWORLD.md, MOD_SETTINGS.md and TRANSLATIONS.md
-from the parent workflow directory; the supplied prompt takes precedence on options testing.
-Inventoried all repository/distributed files, read both patches and metadata, reviewed
-git status, git diff HEAD and git diff --check (no whitespace errors).
-PowerShell System.Xml parsed all three distributed XML files successfully.
-System.Drawing decoded both PNGs and measured their dimensions; both images were viewed.
-The icon's 18.6 KB size below the indicative 20–30 KB range is not a defect.
-No 268-pixel/32-pixel visual inspection or numeric contrast measurement was performed.
-Art/Preview-source.png exists; composition HTML and palette JSON are absent. Preserve the
-source when recomposing; lack of a generation history is not a separate artifact blocker.
-
-A read-only PowerShell DOM exercise merged the installed upstream 1.6/Defs XML from
-C:/Program Files (x86)/Steam/steamapps/workshop/content/294100/2884249920.
-Each of NSTRDapur, NSTRElectricDapur, NSTRDamHaji, NSTRWeaveSpot and NSTRMade_Weave
-resolved to exactly one target. Applying the delivered conditional/add/remove operations
-in memory removed both stove modExtensions nodes and added exactly two JobDefs and two
-JoyGiverDefs. Applying them to an empty Defs document added nothing. These observed checks
-passed; no upstream or game file was modified. This is a limited DOM simulation, not a run
-through RimWorld's loader or a full cross-reference/class-resolution check.
-
-A second in-memory application produced four owned jobs and four owned givers: the recreation
-guards check only building existence, not existing providers. This contradicts the historical
-blanket assertion that any future upstream repair would automatically make these patches inert.
-It does not establish a current in-game duplicate: the normal loader applies patches once.
-Likewise, Stoves.xml removes the whole modExtensions container, not only the named extension.
-Future upstream changes therefore need targeted regression checks; no hypothetical conflict
-is reported as a current runtime failure.
-
-No persistent automated tests were added to finish development during this audit.
-Required next testing work after earlier gates: maintained XML/patch regression cases with
-upstream present/absent and already-corrected inputs, written in-game scenarios with
-preconditions/actions/expected results for stoves, recipes and both recreation buildings,
-then execution against the delivered version. Joy Rescue is an optional integration;
-no current Joy Rescue or RIMMSQOL test is claimed. The game is installed, but no interactive
-session was operated and no current log establishes successful execution.
-
-### Audited artifact fingerprints (SHA-256)
-
-- Mod/Patches/JoyGivers.xml: 8B48AB635AC3E30587F46A2D7BAE1B550CD3110E5FB27B8C92D374AB57A3BB55
-- Mod/Patches/Stoves.xml: 060BCBF7A3A0CC23C5372248AC09792676E481A32574D133A4BB1B9FEA28ECE2
-- Mod/About/About.xml: 3906E25CA68C18A469689C2A4308E0A9DD09222B7F59E7481FF52315903ADF69
-- Mod/About/ModIcon.png: 76DEA31A7B02B9B24BDFA5CF4DDAAC71B45228150494978DACC42581D4E36695
-- Mod/About/Preview.png: BA9098A9FBF197E620C4AD5ADFC67AFE5EAF2F479F34D07AE7790EDB7967D83A
-- Both LICENSE copies: 1A24DB0B016BF77E6D15FDA1BF27B20C76F9B14F1A21458BA36F2BB3A7D2C908
-## First-gate remediation — 2026-09-13
-
-This follow-up supersedes the first-gate outcome of the audit above. The historical
-audit remains intact. Added English ATTRIBUTION.md and CHANGELOG.md; attribution
-is also copied into Mod/ and the two MIT notices remain identical.
-The current licence classification is open for the separate MIT repair implementation.
-The required upstream mod's rights are explicitly excluded and no upstream redistribution
-permission is asserted. Public visibility is consistent with this separate patch scope;
-the old alive/public exception is no longer the classification of this repository.
-
-The requested project folder is MalayThemedExpansionRenew (the neighboring projects
-use concatenated title words). The displayed title remains Malay Themed Expansion Renew,
-the package ID remains nelim.malaythemedexpansionrenew, and the GitHub repository remains
-Rimworld-Malay-Themed-Expansion-Renew. No literal identity across these formats is required.
-The game installation junction must point at the renamed project's Mod/ directory.
-
-Stage: horsMonoRepo. All first-gate requirements are now documented and the earlier
-remote/commit verification remains applicable. The icon artifact remains independently
-validated. Full implementation readiness for the next transition is still not certified;
-the audit's patch behavior limitations and outstanding localization/tests remain recorded.
-No new image, gameplay feature, commit or publication is part of this remediation.
-Folder rename result: attempted on 2026-09-13, NOT completed. Windows refused Move-Item
-because another process is using the directory. Verified afterward: MalayFix still exists,
-MalayThemedExpansionRenew does not exist, and the original RimWorld Mods/MalayFix junction
-still points to MalayFix/Mod. Retry the rename and junction update after the directory handle
-has been released. No game files were removed. This requested naming cleanup does not
-invalidate the documented first-gate classification.
-## Folder migration completed — 2026-09-13
-
-Following the user's instruction, all contents of MalayFix, including hidden .git,
-Art/, Mod/ and all staged/unstaged changes, were moved to:
-C:/Users/nelim/Documents/rimworld/MalayThemedExpansionRenew
-
-The old MalayFix directory is retained empty. This supersedes the earlier blocked
-rename result. The game junction at RimWorld/Mods/MalayFix now targets the new
-MalayThemedExpansionRenew/Mod directory. Its legacy junction name is retained;
-the displayed mod title and package ID are unchanged.
-The Git index SHA-256 was identical before and after moving. No commit or push was made.
-## Readiness completion — 2026-09-13
-
-This section supersedes earlier outstanding implementation, artwork, translation and testing
-items. The earlier audit and remediation history are preserved above.
-
-Current stage: done (ready for final functional validation in game, not tested).
-Current path: C:/Users/nelim/Documents/rimworld/MalayThemedExpansionRenew.
-HEAD remains 78f402810619d6fafd5e4709ca1d4350d8228711; the delivered changes are local.
-Tests/RESULTS.md records SHA-256 hashes for the exact final distributed files and upstream
-fixtures. Existing staged changes were preserved; no commit or push was made.
-
-### Cumulative gates
-
-- horsMonoRepo: previously verified standalone/public GitHub repository and pushed initial
-  commit; English README, ATTRIBUTION, CHANGELOG and both applicable MIT notices exist.
-  open covers this separate repair only, as documented in ATTRIBUTION.md.
-- ModIcon générée: implementation changes complete; XML-only, compilation not applicable.
-  Existing PNG decoded and inspected at 128 and 32 pixels. No icon regeneration needed.
-- Preview générée / preOptions: final PNG at 896 x 504 below 1 MB, directly inspected;
-  title now matches About.xml, Renew is secondary ink at 65%, version badge reads 1.6.
-  The English description ends with the exact Steam-formatted GitHub source link.
-  No linking words in this title need reduction. No unofficial/prohibited tag is required
-  by the separate open patch classification.
-- options: still not_applicable, justified by the earlier behavior inventory; this change
-  adds no configurable state, page, shortcut or integration dependency.
-- l10n: both JobDef.reportString French entries added, English native source preserved.
-  TargetA retained. Shared Check-DefInjected.ps1 run with this mod and installed upstream 1.6:
-  32 patch operations applied, 11,712 defs indexed, 2 keys checked, 0 errors.
-  See Tests/translation-check.txt. Static EN/FR coverage complete; runtime display pending.
-- preTest: required Malay dependency and load ordering remain unchanged and verified.
-  Existing game-provided classes and upstream identifiers are retained.
-- done: TEST_SCENARIOS.md now contains eight scenarios with prerequisites, actions and
-  expected outcomes. Tests/Run-Tests.ps1 executed successfully: 37 checks, including XML
-  parsing, targeted removals, unrelated-extension/recipe preservation, absent dependency,
-  already-served buildings, existing jobs, idempotence, real installed upstream targets,
-  translation tokens and packaged artifacts. Tests/RESULTS.md contains the final results.
-  These are automated DOM/XML tests, not gameplay tests or full engine integration.
-
-### Preview evidence
-
-The source illustration is unchanged. HTML/CSS composition follows STYLE_RIMWORLD.md;
-Art/preview-palette.json is the single palette source and Art/render-preview.cjs reproduces it.
-The cool stone floor motivates the slate veil and cyan accent; warm earth/fire motivates
-the amber secondary ink. The cyan accent remains distinct from the amber Renew suffix.
-Segoe UI availability was checked and document.fonts.ready awaited before capture.
-Direct visual inspection performed at 896 x 504 and 268 pixels wide; icon at 32 pixels.
-Title, suffix and version remain identifiable, with no cropping or overlaps; no concrete
-camera defect was found. Summary is intended for the full-size preview.
-
-Tests/Check-Preview.py sampled every background pixel in each text bounding box, plus
-the opaque badge contrast. Minimum ratios: title 11.54, Renew 8.10, summary 6.24,
-badge 9.50; all exceed 4.5. Art/preview-contrast-qa.json and preview-layout-qa.json
-record results. Art/Preview-before-renew.png preserves the previous final banner.
-The initial contrast check included unused title-box space and reported 4.11; the box
-was fitted to the title, the image rerendered and final checks passed as recorded above.
-
-### Functional changes and remaining validation
-
-Stoves now lose only the exact problematic extension instead of their whole container.
-Recreation guards now detect existing providers, and preserve existing owned JobDefs;
-automated cases cover these corrections. Their affected in-game regressions remain pending.
-
-Next transition: done -> tested. Execute TEST_SCENARIOS.md on the delivered version in
-English and French, inspect logs, cover a new colony and existing save, and record results.
-No current game session was operated, no current gameplay success is claimed, and no optional
-Joy Rescue/RIMMSQOL integration has been tested here. Settings persistence/input/shortcut
-tests are not applicable because no settings exist. The historical tested_on date remains
-history only. Native game UI control is not available through this session's enabled
-computer-use surface, which supports browsers; in-game verification requires an interactive
-RimWorld session and must not be replaced with these static results.
-
-## Audit — 2026-09-27, applying AUDIT.md
-
-Revision at the start of this pass: `f36a205`. Working tree carried one untracked file,
-`Mod/About/PublishedFileId.txt` (`3806768309`), the trace of a Workshop item created outside
-this session. No second RimWorld instance was launched, and none was needed: everything below
-is off-game.
-
-**0.1.0 recorded.** Per AUDIT.md's `prepublished → published` section, a prepublication can
-happen at any point in the chain and proves nothing beyond "the item exists". Committed
-`Mod/About/PublishedFileId.txt` on its own (`5a4e6c6`, "Add published Workshop file ID for
-0.1.0") and opened `CHANGELOG.md` with `## [0.1.0] - 2026-09-27`. The item is private, as every
-new Steam item is, and untested; this does not move `stage`.
-
-**`done → tested` re-checked against the three new criteria.** No `@wip` scenario exists —
-there is no Gherkin suite at all, `TEST_SCENARIOS.md` is plain-English. No `@requires:` scenario
-exists either, so there is none left un-run. And every manual check that remains
-(`TEST_SCENARIOS.md`, status "NOT RUN") is still exactly that: a manual check, not automated,
-not yet performed. None of the three surfaced a defect; they confirm the gate was already
-correctly held at `done`, not past it. `stage` stays `done`.
-
-**Evidence.** No `Tests/Pickle/Evidence/` or `evidence/` folder exists — no Pickle pass has
-ever been requested for this mod — so there was nothing to trim on disk or remove from git.
-Added both patterns to `.gitignore` pre-emptively, and a short "Evidence retention" note to
-the new `TESTING.md`, so a future pass has somewhere to read the rule before it produces its
-first report.
-
-**`.dds`.** None tracked, none on disk (`git ls-files`, `find`, both empty). Added `*.dds` to
-`.gitignore` anyway, since this mod's textures are PNG and a `.dds` appearing later would mean
-an unconverted import, not something to ship.
-
-**Origin repository.** Checked whether Malay Themed Expansion has a public source repository
-to build this patch from or send a pull request to, per PUBLISHING.md's "Départ depuis le
-projet d'origine". A web search turned up only the Steam Workshop page; no GitHub or other code
-host was found for Shanaki97's mod. Recorded in `ATTRIBUTION.md`. The patch-mod approach this
-repository already took is the one PUBLISHING.md prescribes for this case.
-
-**Duplicated `ATTRIBUTION.md`.** `Mod/ATTRIBUTION.md` had drifted from the root copy (missing
-the provenance-check paragraph added this session); recopied.
-
-**Documents read.** Logged file-by-file in `docs/PROTOCOLS-READ.md`, revision and usefulness
-per document, per `Rimworld-Ticket-Dispatcher/docs/WELCOME.md` point 5. One found modified but
-uncommitted upstream, `WORKSHOP_COMMENTS.md` — another session's in-progress edit, unrelated to
-this mod, left untouched.
-
-No defect found in any of the above. Nothing here changes `stage`, `settings_audit`,
-`licence_audit`, `automated_tests` or `xml_tests`: their evidence stands as recorded above.
-
-## Translation audit — 2026-09-30, French gender-agreement rule
-
-`translation_fr` was reset to `unchecked` by the 2026-09-30 change to TRANSLATIONS.md section 3
-(the three-segment gender switch, and the requirement that only Virginie's own reading can mark
-French `complete`). Redid the French pass under the new rule; revision `94430a6`.
-
-**Inventory.** No Keyed folder, no grammar files, no translatable Def label/description in this
-mod (it only removes modExtensions and adds JoyGiverDef/JobDef entries). The only player-facing
-text is the two job reportStrings already recorded in the 2026-09-13 translation audit above:
-`MalayFix_Play_DamHaji.reportString` and `MalayFix_Weave.reportString`, both covered by
-`Mod/Languages/French/DefInjected/JobDef/MalayFix.xml`.
-
-**Gender switch.** Read both French strings against the new rule: `joue au dam haji.` and
-`tisse sur TargetA.` are each a bare present-tense verb plus complement, with no adjective,
-past participle or noun agreeing with the pawn. Neither needs the three-segment switch. No
-defect found.
-
-**Review file.** Generated `FRENCH_REVIEW.md` at the mod root with `Tests/Generate-FrenchReview.ps1`,
-which reads `Mod/Patches/JoyGivers.xml` and the French DefInjected file directly, so the table
-cannot drift from the shipped XML. Re-run it after either file changes.
-
-`translation_fr` set to `partial`: the inventory and gender-switch checks pass, but per
-TRANSLATIONS.md section 3 the field cannot reach `complete` until Virginie has read
-`FRENCH_REVIEW.md` herself; this session does not and cannot perform that review. Added
-"unverified: French review by Virginie" to `remaining`.
-
-## Audit — 2026-10-02, applying AUDIT.md (`5a975b5`)
-
-Revision at the start: `d8d900f`, tree clean. Off-game checks only; no RimWorld was launched. Old
-status `done`, retained status `done`, `workflow_stage: done`.
-
-**0.1.0.** `Mod/About/PublishedFileId.txt` (`3806768309`) is committed (`5a4e6c6`), and `CHANGELOG.md`
-opens with `## [0.1.0]`, "Creation of a Workshop file ID". The item is private and untested. It does
-not move `stage`. It was created under the old package id `nelim.malaythemedexpansionrenew`; the
-current one is `nelim.malaythemedexpansion`, still unreleased in the changelog.
-
-**Transitions replayed.**
-- `options -> l10n`, against TRANSLATIONS.md `af8427f`: two `reportString` fields, no counted noun,
-  no pawn agreement, no Keyed key. French DefInjected covers both, `TargetA` kept. `FRENCH_REVIEW.md`
-  was regenerated with the shared `scripts/Make-FrenchReview.ps1` (heading and layout of the current
-  rule); it replaces the mod's own `Tests/Generate-FrenchReview.ps1`, removed. The English text
-  lives in `french-review-english.json` because the script reads English from `Mod/Defs`, which
-  this patch mod does not have. `translation_fr` stays `partial` until Virginie reads it.
-- `l10n -> preTest`: `About.xml` unchanged since the 2026-09-13 audit. `modDependencies` names only
-  Malay Themed Expansion; VEF stays in `loadAfter` because no class or def of this mod references
-  it. No `LoadFolders.xml`.
-- `preTest -> done`: `Tests/Run-Tests.ps1` replayed, 37 checks passed; `Tests/Pickle/Check-Steps.ps1`
-  replayed, all 154 step lines resolve to one expression (its default path pointed at a
-  pre-`1.6/` Pickle layout; fixed to `1.6\Assemblies`). The Pickle suite is written and its
-  scope is justified in `Tests/Pickle/README.md`.
-
-**`done -> tested`, the three criteria.** No `@wip` scenario. The one `@requires:` scenario
-(`nelim.joyrescue`) has run, in its own pass, but on `690cad2`, before two step changes: to replay.
-Manual checks: the two halves not played (electric stove, pre-patch save) are listed not
-applicable with reasons in `TESTING.md`; no manual check is left to tick. Not met: the nine
-`02-cooking` scenarios are red, so the gate stays closed. This does not move `stage`: it
-needs the game, so it sits in `remaining`.
-
-**Reports read.** `db588fa` and `94430a6` (English, French): `exitReason: failed`, 19 scenarios
-played, 10 passed, 9 failed, all nine in `02-cooking`. `setName: sans-facultatifs`. `@review`
-captures opened and read: English "Weaving at wooden Weave Spot (normal).", French "Tisse sur Weave
-Spot en bois (normal)." (the building label is the upstream one). The capture of a failed cooking
-scenario shows the cook standing idle outside the building ("1 colonist idle") and the three other colonists asleep.
-
-**Evidence.** Nothing was tracked in git (`git log --all` on `Evidence`/`.dds` is empty). On disk
-413 MB became 13 MB: the two `db588fa` reports deleted (superseded), `report.html`,
-`messages.ndjson` and the other captures deleted from the kept ones. Kept per pass: `summary.json`,
-`junit.xml`, `Player.log`, the opened `@review` captures, one failed cooking capture, and the older
-`joyrescue-690cad2` report (sole proof of that scenario). The keep rule is in `TESTING.md` and
-`Tests/Pickle/README.md`. One line per run is in `docs/runs/history.md`. No `pickle-reports-archive`
-folder belongs to this mod.
-
-**`.dds`.** None tracked, none on disk; `*.dds` stays ignored. Added `Mod/**/*.ico` to `.gitignore`.
-
-**Origin repository.** Searched again on 2026-10-02: Malay Themed Expansion (Shanaki97) has only its
-Workshop page, no code repository. `upstream_mod_remotes: N/A` stands, and there is no pull request
-to make.
-
-**Gallery.** `Art/steam/00-preview.png` moved to `Art/Gallery/0-preview.png`, byte-identical to
-`Mod/About/Preview.png`, per the current PUBLISHING.md numbering.
-
-**Reserves, not blockers.** `Art/Preview.ico` (2026-09-27) is older than `Preview.png`
-(2026-09-29, badge added): the local folder icon shows the previous composition. The `Mod/` and root
-`desktop.ini` and both `.ico` targets exist.
+- 2026-09-12: detached into its own repository, renamed (name, package id, repository). Folder
+  `MalayThemedExpansionRenew` since 2026-09-13.
+- 2026-09-13: first audit and remediation; ATTRIBUTION and CHANGELOG added; licence `open` for this
+  separate MIT repair only, Malay's rights excluded. Two JobDef `reportString` French entries added.
+  Stoves now lose only the exact bad extension; recreation guards test existing providers.
+- 2026-09-27: `Mod/About/PublishedFileId.txt` (`3806768309`) committed, CHANGELOG `[0.1.0]`. Private,
+  untested item; created under the old package id.
+- 2026-09-30: French gender-agreement rule replayed: both strings are bare verb plus complement, no
+  agreement needed. `FRENCH_REVIEW.md` generated; `translation_fr` reset to `partial`.
+- 2026-10-02: audit replay (`5a975b5`): dependencies, tests, evidence pruned (413 MB to 13 MB, keep rule in
+  `TESTING.md`), gallery moved to `Art/Gallery/0-preview.png`, no origin repository for Malay (Workshop
+  only). Pickle reports on `db588fa` and `94430a6`: 19 scenarios, 10 passed, 9 failed, all in
+  `02-cooking`; cause not established. Reserve: `Art/Preview.ico` older than `Preview.png`.
