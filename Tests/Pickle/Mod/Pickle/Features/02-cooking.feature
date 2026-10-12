@@ -35,6 +35,7 @@ Feature: the Malay stove cooks
     And 100 "RawRice" is spawned at the stockpile
     And 60 "Meat_Muffalo" is spawned at the stockpile
     And I spawn a "NSTRDapur" at (146, 156)
+    And Malay Themed Expansion Renew: the "NSTRDapur" belongs to the colony
     And Malay Themed Expansion Renew: the "NSTRDapur" is fuelled
     And I set "Cook" priority "Cooking" to 1
     And I add bill "<recipe>" to the "NSTRDapur" at (146, 156)

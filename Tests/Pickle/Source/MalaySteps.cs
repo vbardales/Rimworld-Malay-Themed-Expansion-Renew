@@ -254,6 +254,19 @@ namespace MalayThemedExpansion.PickleSteps
 
         // ------------------------------------------------------------------ the stove
 
+        /// <summary>
+        /// A thing spawned by the generic spawn step has no faction, and a colonist is never offered a bill on a building
+        /// the colony does not own: the cook then stands idle beside a stove that looks fine (found 2026-10-12, the nine
+        /// red 02-cooking scenarios of 2026-09-30 and 2026-10-02). Eden Garden's own build step sets the faction the same way.
+        /// </summary>
+        [Given("Malay Themed Expansion Renew: the {string} belongs to the colony")]
+        public void BelongsToTheColony(PickleContext ctx, string buildingDefName)
+        {
+            Thing stove = Building(ctx, buildingDefName);
+            stove.SetFaction(Faction.OfPlayer);
+            ctx.Assert(stove.Faction == Faction.OfPlayer, $"the {buildingDefName} is still not the colony's");
+        }
+
         [Given("Malay Themed Expansion Renew: the {string} is fuelled")]
         public void Fuelled(PickleContext ctx, string buildingDefName)
         {
