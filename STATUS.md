@@ -34,7 +34,8 @@ remaining:
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
 updated:      2026-10-12, French review validated by Virginie, writeTests -> playTests
-protocols_read_sha: a28e16d5cb76835d87bc13b416c3042f524cc45f
+protocols_read_sha: 5cc8e00c60a9d22d822c755f5f8a77413bdec8b3
+social_preview_sha256: 9a1840c838d1c47112d76fc5ff2e7e5209488406b193d1160ab0cf2abd7f328f
 ---
 
 # Malay Themed Expansion Renew — status
