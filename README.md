@@ -120,10 +120,6 @@ Run the shared translation verifier with both this Mod/ and upstream 1.6/ as Tar
 Tests/translation-check.txt records the latest output. TEST_SCENARIOS.md describes
 the functional scenarios; `Tests/Pickle/` plays them in the game and `TESTING.md` lists the passes, the evidence kept and what is not applicable.
 
-Art/preview.html loads Art/preview-palette.json and the preserved Preview-source.png.
-Art/render-preview.cjs requires Node.js, Playwright and Chrome; set NODE_PATH as appropriate
-for the installed modules. Tests/Check-Preview.py requires Python and Pillow.
-Run the renderer and contrast check after changing the composition, then Run-Tests.ps1
-to refresh the final delivered-file hashes. Art/Preview-before-renew.png archives the old banner.
+The Preview is rendered from `Art/Preview.config.json`, `Art/Preview-source.png`, `Art/echo-preview.png` and `Art/ModIcon-source.png` by the shared renderer (`node ../scripts/Render-Preview.cjs` in the protocols repository; it needs Node.js, Playwright and Chrome). Run `Tests/Run-Tests.ps1` afterwards to refresh the delivered-file hashes.
 
 See ATTRIBUTION.md for studied third-party work and the licence boundary.
