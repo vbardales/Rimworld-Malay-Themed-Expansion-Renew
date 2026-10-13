@@ -25,14 +25,16 @@ remaining:
   - unverified: Pickle `02-cooking` red, 9 of 9 scenarios, on `db588fa` and again on `94430a6`
     (English and French): "no NSTRNasiLemak was made; the map held 0 before and 0 after", the vanilla
     `CookMealSimple` too, the cook idle outside the room in the capture. Cause not established (suite
-    setup or mod). the `playTests` gate stays closed until each is replayed green.
+    setup or mod). Replayed alone on `88947ba` and `0191a19` (stove given to the colony, the save's own
+    colonist Jet): still red, same message. Ticket `20261013-173133-016-0118` replays it on `43631d2`.
+    The `playTests` gate stays closed until each is replayed green.
   - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
     it, so it replays in the final non-regression pass.
   - unverified: electric stove cooking and a save from before the patch are not played; listed not
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
 updated:      2026-10-12, French review validated by Virginie, writeTests -> playTests
-protocols_read_sha: b9e70d5f65c63f769ac01131f6873b6055e4face
+protocols_read_sha: a28e16d5cb76835d87bc13b416c3042f524cc45f
 ---
 
 # Malay Themed Expansion Renew — status
