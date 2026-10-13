@@ -50,5 +50,5 @@ powershell.exe -ExecutionPolicy Bypass -File Rimworld-Ticket-Dispatcher\scripts\
   -EvidenceDir MalayThemedExpansionRenew/Tests/Pickle/Evidence/minimal-en
 ```
 
-Offline check of the step expressions, before any request: `Tests/Pickle/Check-Steps.ps1`. Rebuild the step assembly with
+Offline check of the step expressions, before any request: `scripts/Check-Steps.ps1 -Mod MalayThemedExpansionRenew` (protocols repository). Rebuild the step assembly with
 `dotnet build Tests/Pickle/Source/MalayThemedExpansion.PickleSteps.csproj -c Release` after any change to `Source/`.

@@ -4,7 +4,7 @@
 
 - `Tests/Run-Tests.ps1`: automated XML/DOM checks, off-game. `Tests/RESULTS.md` records the last
   run (37 checks). It is the short summary kept in git, as AGENTS.md asks.
-- `Tests/Pickle/Check-Steps.ps1`: offline check that every step line of the suite resolves to
+- `scripts/Check-Steps.ps1 -Mod MalayThemedExpansionRenew` (protocols repository): offline check that every step line of the suite resolves to
   exactly one expression. Run it before any Pickle request.
 - `TEST_SCENARIOS.md`: the eight functional scenarios, each with its precondition, action and
   expected result, and where it is proven (Pickle, offline, or not applicable).
