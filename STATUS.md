@@ -34,7 +34,7 @@ remaining:
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
 updated:      2026-10-12, French review validated by Virginie, writeTests -> playTests
-protocols_read_sha: 392234bae633f23b1f25011ab3b2e537c846aff5
+protocols_read_sha: df7fb1f6fbd2932cadaeb2e8915358d0ac43f96f
 social_preview_sha256: 9a1840c838d1c47112d76fc5ff2e7e5209488406b193d1160ab0cf2abd7f328f
 ---
 
