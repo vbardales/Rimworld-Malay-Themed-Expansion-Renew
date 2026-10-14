@@ -26,7 +26,12 @@ remaining:
     (English and French): "no NSTRNasiLemak was made; the map held 0 before and 0 after", the vanilla
     `CookMealSimple` too, the cook idle outside the room in the capture. Cause not established (suite
     setup or mod). Replayed alone on `88947ba` and `0191a19` (stove given to the colony, the save's own
-    colonist Jet): still red, same message. Ticket `20261013-173133-016-0118` replays it on `43631d2`.
+    colonist Jet): still red, same message. Replayed on `43631d2` (all 9 scenarios, ticket
+    `20261013-173133-016-0118`): 0 of 8 plus the vanilla one, watchdog-timeout. Every setup step passes, then
+    the wait runs 124 s with no product; the capture shows Jet idle outdoors at 23h. The vanilla recipe fails
+    too, so the mod's recipes are not the cause. Working hypothesis: the hard-coded cells (stove at (146, 156),
+    stockpile at (150, 160)) of the save are not clear or reachable for Jet; Eden Garden's passing bill suite
+    clears a field near Jet and builds the station there. Not confirmed without the game.
     The `playTests` gate stays closed until each is replayed green.
   - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
     it, so it replays in the final non-regression pass.
@@ -34,7 +39,7 @@ remaining:
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
 updated:      2026-10-12, French review validated by Virginie, writeTests -> playTests
-protocols_read_sha: b483dd6813cb9e000e9a71d4a0d631de555c7aac
+protocols_read_sha: 1eba2baf4d52f146b4fe4f01d90bdd9f0988979e
 social_preview_sha256: 9a1840c838d1c47112d76fc5ff2e7e5209488406b193d1160ab0cf2abd7f328f
 ---
 
