@@ -248,24 +248,134 @@ namespace MalayThemedExpansion.PickleSteps
             ctx.Assert(pawn.timetable != null, $"{nickname} has no timetable");
             for (int hour = 0; hour < 24; hour++)
             {
-                pawn.timetable.SetAssignment(hour, TimeAssignmentDefOf.Anything);
+                pawn.timetable.SetAssignment(hour, TimeAssignmentDefOf.Work);
             }
         }
 
-        // ------------------------------------------------------------------ the stove
+        // ------------------------------------------------------------------ an open field
 
-        /// <summary>
-        /// A thing spawned by the generic spawn step has no faction, and a colonist is never offered a bill on a building
-        /// the colony does not own: the cook then stands idle beside a stove that looks fine (found 2026-10-12, the nine
-        /// red 02-cooking scenarios of 2026-09-30 and 2026-10-02). Eden Garden's own build step sets the faction the same way.
-        /// </summary>
-        [Given("Malay Themed Expansion Renew: the {string} belongs to the colony")]
-        public void BelongsToTheColony(PickleContext ctx, string buildingDefName)
+        // 2026-10-14: the cooking scenarios spawned the stove and the ingredients at fixed cells of the fixture, and
+        // the cook stood idle outdoors while every bill, vanilla included, produced nothing (three red replays). The
+        // fixture is a desert with rock in it: a fixed cell can be rock, roofed or out of Jet's reach. Eden Garden's
+        // passing bill suite asks for a field near the colonist instead, and places everything by offset in it.
+        private const int FieldWidth = 18;
+        private const int FieldHeight = 8;
+
+        private sealed class Field
         {
-            Thing stove = Building(ctx, buildingDefName);
-            stove.SetFaction(Faction.OfPlayer);
-            ctx.Assert(stove.Faction == Faction.OfPlayer, $"the {buildingDefName} is still not the colony's");
+            public IntVec3 Origin;
         }
+
+        private static IntVec3 FieldCell(PickleContext ctx, int dx, int dz)
+        {
+            Field field = null;
+            try
+            {
+                field = ctx.Get<Field>();
+            }
+            catch (InvalidOperationException)
+            {
+                // no field laid yet
+            }
+
+            ctx.Require(field != null, "no field is laid yet: start the scenario with the open field step");
+            ctx.Require(dx >= 0 && dx < FieldWidth && dz >= 0 && dz < FieldHeight,
+                $"the field cell ({dx}, {dz}) is outside the {FieldWidth} x {FieldHeight} field");
+            return new IntVec3(field.Origin.x + dx, 0, field.Origin.z + dz);
+        }
+
+        private static bool OpenCell(Map map, IntVec3 cell)
+        {
+            if (!cell.InBounds(map) || !cell.Standable(map) || cell.Roofed(map))
+            {
+                return false;
+            }
+
+            TerrainDef terrain = cell.GetTerrain(map);
+            if (terrain == null || terrain.passability == Traversability.Impassable || terrain.IsWater)
+            {
+                return false;
+            }
+
+            return !cell.GetThingList(map).Any(t => t.def.passability == Traversability.Impassable || t is Building);
+        }
+
+        [Given("Malay Themed Expansion Renew: an open field near {string} is cleared")]
+        public void OpenField(PickleContext ctx, string nickname)
+        {
+            Map map = CurrentMap(ctx);
+            Pawn pawn = Colonist(ctx, nickname);
+            IntVec3 start = pawn.Position;
+            IntVec3? best = null;
+            int bestDistance = int.MaxValue;
+            for (int ox = start.x - 45; ox <= start.x + 45; ox++)
+            {
+                for (int oz = start.z - 45; oz <= start.z + 45; oz++)
+                {
+                    int distance = Math.Abs(ox - start.x) + Math.Abs(oz - start.z);
+                    if (distance >= bestDistance)
+                    {
+                        continue;
+                    }
+
+                    CellRect rect = new CellRect(ox, oz, FieldWidth, FieldHeight);
+                    if (!rect.InBounds(map) || !rect.Cells.All(c => OpenCell(map, c)))
+                    {
+                        continue;
+                    }
+
+                    IntVec3 center = new IntVec3(ox + FieldWidth / 2, 0, oz + FieldHeight / 2);
+                    if (!map.reachability.CanReach(start, center, PathEndMode.OnCell, TraverseParms.For(pawn)))
+                    {
+                        continue;
+                    }
+
+                    best = new IntVec3(ox, 0, oz);
+                    bestDistance = distance;
+                }
+            }
+
+            ctx.Require(best.HasValue,
+                $"no {FieldWidth} x {FieldHeight} open field within 45 cells of \"{nickname}\" at {start}: the fixture changed or the colonist is walled in");
+            foreach (IntVec3 cell in new CellRect(best.Value.x, best.Value.z, FieldWidth, FieldHeight))
+            {
+                foreach (Thing thing in cell.GetThingList(map).ToList())
+                {
+                    if (!(thing is Pawn) && thing.def.destroyable)
+                    {
+                        thing.Destroy();
+                    }
+                }
+            }
+
+            ctx.Set(new Field { Origin = best.Value });
+        }
+
+        [When("Malay Themed Expansion Renew: I build a {string} in the field at \\({int}, {int}\\)")]
+        public void BuildInField(PickleContext ctx, string defName, int dx, int dz)
+        {
+            Map map = CurrentMap(ctx);
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
+            ctx.Assert(def != null, $"no ThingDef \"{defName}\": is Malay Themed Expansion loaded?");
+            Thing thing = ThingMaker.MakeThing(def, GenStuff.DefaultStuffFor(def));
+            thing.SetFaction(Faction.OfPlayer);
+            GenSpawn.Spawn(thing, FieldCell(ctx, dx, dz), map, Rot4.North);
+            ctx.Assert(thing.Faction == Faction.OfPlayer, $"the {defName} is still not the colony's");
+        }
+
+        [When("Malay Themed Expansion Renew: {int} {string} is spawned in the field at \\({int}, {int}\\)")]
+        public void SpawnInField(PickleContext ctx, int count, string defName, int dx, int dz)
+        {
+            Map map = CurrentMap(ctx);
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
+            ctx.Assert(def != null, $"no ThingDef \"{defName}\"");
+            Thing thing = ThingMaker.MakeThing(def);
+            thing.stackCount = count;
+            ctx.Assert(GenPlace.TryPlaceThing(thing, FieldCell(ctx, dx, dz), map, ThingPlaceMode.Near),
+                $"no room to place {count} {defName} near the field cell ({dx}, {dz})");
+        }
+
+        // ------------------------------------------------------------------ the stove
 
         [Given("Malay Themed Expansion Renew: the {string} is fuelled")]
         public void Fuelled(PickleContext ctx, string buildingDefName)
