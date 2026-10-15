@@ -32,14 +32,15 @@ remaining:
     too, so the mod's recipes are not the cause. Working hypothesis: the hard-coded cells (stove at (146, 156),
     stockpile at (150, 160)) of the save are not clear or reachable for Jet; Eden Garden's passing bill suite
     clears a field near Jet and builds the station there. Not confirmed without the game.
+    Field-and-stove fix `7e77b5b` (open field near Jet, stove built there, work all day) not yet replayed: ticket filed 2026-10-15.
     The `playTests` gate stays closed until each is replayed green.
   - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
     it, so it replays in the final non-regression pass.
   - unverified: electric stove cooking and a save from before the patch are not played; listed not
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
-updated:      2026-10-12, French review validated by Virginie, writeTests -> playTests
-protocols_read_sha: 1eba2baf4d52f146b4fe4f01d90bdd9f0988979e
+updated:      2026-10-15, audit replayed to playTests, protocols read
+protocols_read_sha: e733386f133716f60efbad53c37602935eda7050
 social_preview_sha256: 9a1840c838d1c47112d76fc5ff2e7e5209488406b193d1160ab0cf2abd7f328f
 ---
 
