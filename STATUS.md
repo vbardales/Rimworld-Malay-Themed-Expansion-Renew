@@ -40,7 +40,7 @@ remaining:
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
 updated:      2026-10-15, audit replayed to playTests, protocols read
-protocols_read_sha: e733386f133716f60efbad53c37602935eda7050
+protocols_read_sha: 43dd90d4b7873c500347fba1be01275a48d5795b
 social_preview_sha256: 9a1840c838d1c47112d76fc5ff2e7e5209488406b193d1160ab0cf2abd7f328f
 ---
 

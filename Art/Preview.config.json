@@ -1,60 +1,43 @@
 {
-  "title": "Malay Themed Expansion Renew",
-  "titleSize": 42,
-  "titleParts": [
-    {
-      "text": "Malay Themed"
-    },
-    {
-      "break": true
-    },
-    {
-      "text": "Expansion"
-    },
-    {
-      "text": " Renew",
-      "scale": 0.65,
-      "font": "ui",
-      "color": "secondary"
-    }
-  ],
-  "suffix": "",
-  "tag": "",
-  "copyLines": [
-    "Restores Malay cooking",
-    "and recreation."
-  ],
-  "layout": "panel",
-  "panelAnchor": "top-left",
-  "modIconSource": "ModIcon-source.png",
+  "panel": {
+    "title": "Malay Themed Expansion Renew",
+    "titleSize": 42,
+    "titleParts": [
+      {
+        "text": "Malay Themed"
+      },
+      {
+        "break": true
+      },
+      {
+        "text": "Expansion"
+      },
+      {
+        "break": true
+      },
+      {
+        "text": "Renew",
+        "scale": 0.65,
+        "font": "ui",
+        "color": "secondary"
+      }
+    ],
+    "copyLines": [
+      "Restores Malay cooking",
+      "and recreation."
+    ]
+  },
   "backgroundFile": "Preview-source.png",
-  "backgroundPosition": "center",
-  "backgroundSize": "cover",
   "echo": {
     "file": "echo-preview.png",
-    "preSized": true,
-    "mode": "alpha",
     "color": "var(--accent)",
     "width": 170,
-    "height": 150,
-    "opacity": 1,
-    "veil": false,
-    "panelTop": 2,
-    "panelRight": 1,
-    "panelWidth": 33,
-    "flipX": true
+    "height": 150
   },
-  "iconBadge": {
+  "icon": {
     "file": "ModIcon-source.png",
     "corner": "bottom-left",
-    "width": 180,
-    "translate": "-12.5%, 12.5%",
-    "rotate": 30,
-    "outline": false,
-    "veil": "radial",
-    "veilSize": 250,
-    "veilLeft": -45,
-    "veilBottom": -45
+    "rotate": 35
   },
   "palette": {
     "veil": "#202932",
