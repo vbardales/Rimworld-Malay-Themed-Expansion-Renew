@@ -41,7 +41,7 @@ remaining:
 session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
 updated:      2026-10-15, audit replayed to playTests, protocols read
 protocols_read_sha: 43dd90d4b7873c500347fba1be01275a48d5795b
-social_preview_sha256: 9a1840c838d1c47112d76fc5ff2e7e5209488406b193d1160ab0cf2abd7f328f
+social_preview_sha256: 491c4e290bdde3a5b095e8eae971e874d65d8235620086edbe9f5b7277ee6c16
 ---
 
 # Malay Themed Expansion Renew — status
