@@ -32,7 +32,10 @@ remaining:
     too, so the mod's recipes are not the cause. Working hypothesis: the hard-coded cells (stove at (146, 156),
     stockpile at (150, 160)) of the save are not clear or reachable for Jet; Eden Garden's passing bill suite
     clears a field near Jet and builds the station there. Not confirmed without the game.
-    Field-and-stove fix `7e77b5b` (open field near Jet, stove built there, work all day) not yet replayed: ticket filed 2026-10-15.
+    Field-and-stove fix `7e77b5b` (open field near Jet, stove built there, work all day) replayed, still red:
+    `CookMealSimple` alone (2026-10-15) and the full suite (2026-10-16, 9 of 9): "no MealSimple was made; the map
+    held 0 before and 0 after". Capture at midnight (0h, dark): Jet idle outdoors at the far left, no stove nor
+    field in view. Cause not established; the field and stove are not where Jet is, or Jet does not path to them.
     The `playTests` gate stays closed until each is replayed green.
   - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
     it, so it replays in the final non-regression pass.
