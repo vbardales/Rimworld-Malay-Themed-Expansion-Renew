@@ -31,3 +31,6 @@ build/
 
 # Explorer folder icons belong beside Mod/, never inside it: Steam uploads Mod/ unfiltered.
 Mod/**/*.ico
+
+# Preview render intermediates (AGENTS.md, Closing pass step 1).
+Art/.render/
