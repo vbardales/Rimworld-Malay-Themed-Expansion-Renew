@@ -37,6 +37,7 @@ remaining:
     held 0 before and 0 after". Capture at midnight (0h, dark): Jet idle outdoors at the far left, no stove nor
     field in view. Cause not established; the field and stove are not where Jet is, or Jet does not path to them.
     Diagnosis + vanilla-stove control `fba7ae9`: ticket `20261026-041611-036-c4fb` filed 2026-10-26 (10 scenarios, `Tests/Pickle/Inbox/cooking-diag-fba7ae9`).
+    Pending owner decision: delete the red `Tests/Pickle/Evidence/cooking-*` folders (203 MB, no RELEASE.md), keeping the newest; do it after the run is read.
     The `playTests` gate stays closed until each is replayed green.
   - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
     it, so it replays in the final non-regression pass.
