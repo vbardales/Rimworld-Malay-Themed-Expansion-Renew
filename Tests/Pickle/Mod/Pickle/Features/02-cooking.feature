@@ -40,8 +40,9 @@ Feature: the Malay stove cooks
     And I set "Jet" priority "Cleaning" to 0
     And I add bill "<recipe>" to the "NSTRDapur"
     Then the "NSTRDapur" has 1 bills
+    And Malay Themed Expansion Renew: "Jet" is offered a bill job at the "NSTRDapur"
     Given game speed is ultrafast
-    When I wait for bill "<recipe>" to finish
+    When Malay Themed Expansion Renew: I wait for the bills of the "NSTRDapur" to finish, explaining why "Jet" does not
     Then a "<product>" exists
     And no errors were logged
 
@@ -56,3 +57,26 @@ Feature: the Malay stove cooks
       | NSTRCookKetupat       | NSTRKetupat   |
       | NSTRCookKetupatBulk   | NSTRKetupat   |
       | CookMealSimple        | MealSimple    |
+
+  # Control (2026-10-26): the same scene with the vanilla wood stove. Green here and red above means the NSTRDapur is
+  # the cause; red here too means the scene or the colonist is. Either way the failure message carries the diagnosis.
+  @slow @timeout:280
+  Scenario: a cook fills the CookMealSimple bill at the vanilla wood stove
+    Given Malay Themed Expansion Renew: "Jet" is scheduled to work all day
+    Then "Jet" can do "Cooking"
+    Given "Jet" skill "Cooking" is set to level 10
+    And "Jet" needs "Rest" is set to 100 percent
+    And "Jet" needs "Food" is set to 100 percent
+    And Malay Themed Expansion Renew: an open field near "Jet" is cleared
+    And Malay Themed Expansion Renew: 100 "RawRice" is spawned in the field at (3, 3)
+    And Malay Themed Expansion Renew: I build a "FueledStove" in the field at (10, 3)
+    And Malay Themed Expansion Renew: the "FueledStove" is fuelled
+    And I set "Jet" priority "Cooking" to 1
+    And I set "Jet" priority "Hauling" to 0
+    And I set "Jet" priority "Cleaning" to 0
+    And I add bill "CookMealSimple" to the "FueledStove"
+    Then Malay Themed Expansion Renew: "Jet" is offered a bill job at the "FueledStove"
+    Given game speed is ultrafast
+    When Malay Themed Expansion Renew: I wait for the bills of the "FueledStove" to finish, explaining why "Jet" does not
+    Then a "MealSimple" exists
+    And no errors were logged

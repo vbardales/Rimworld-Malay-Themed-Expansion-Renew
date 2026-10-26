@@ -375,6 +375,125 @@ namespace MalayThemedExpansion.PickleSteps
                 $"no room to place {count} {defName} near the field cell ({dx}, {dz})");
         }
 
+        // ------------------------------------------------------------------ why a cook does not take a bill
+
+        // 2026-10-26: four red replays (0 of 9) with the cook idle outdoors and no clue why. The built-in wait only
+        // says "no product was made". These steps ask the game what the work giver sees, once right after the bill
+        // is added (fails fast) and again when the wait runs out.
+
+        private static WorkTypeDef CookingWork => DefDatabase<WorkTypeDef>.GetNamed("Cooking");
+
+        private static string Diagnose(PickleContext ctx, string nickname, string stoveDefName)
+        {
+            var lines = new List<string>();
+            try
+            {
+                Map map = CurrentMap(ctx);
+                Pawn pawn = Colonist(ctx, nickname);
+                Thing stove = Building(ctx, stoveDefName);
+                Building_WorkTable table = stove as Building_WorkTable;
+
+                lines.Add($"hour {GenLocalDate.HourOfDay(map)}, paused {Find.TickManager.Paused}, speed {Find.TickManager.CurTimeSpeed}, " +
+                          $"windows {Find.WindowStack.Windows.Count} [{string.Join(", ", Find.WindowStack.Windows.Select(w => w.GetType().Name))}]");
+                lines.Add($"{nickname} at {pawn.Position}, job {(pawn.CurJob == null ? "none" : pawn.CurJob.def.defName)}, " +
+                          $"drafted {pawn.Drafted}, downed {pawn.Downed}, mental {pawn.InMentalState}, " +
+                          $"timetable {pawn.timetable?.CurrentAssignment?.defName}, cooking priority {pawn.workSettings?.GetPriority(CookingWork)}, " +
+                          $"cooking disabled {pawn.WorkTypeIsDisabled(CookingWork)}, area {pawn.playerSettings?.AreaRestrictionInPawnCurrentMap?.Label ?? "none"}");
+                lines.Add($"{stoveDefName} at {stove.Position}, spawned {stove.Spawned}, faction {stove.Faction?.Name ?? "none"}, " +
+                          $"forbidden {stove.IsForbidden(pawn)}, interaction cell {stove.InteractionCell} " +
+                          $"(standable {stove.InteractionCell.Standable(map)}, reachable {map.reachability.CanReach(pawn.Position, stove.InteractionCell, PathEndMode.OnCell, TraverseParms.For(pawn))}), " +
+                          $"stove reachable {map.reachability.CanReach(pawn.Position, stove, PathEndMode.InteractionCell, TraverseParms.For(pawn))}");
+                CompRefuelable fuel = stove.TryGetComp<CompRefuelable>();
+                CompPowerTrader power = stove.TryGetComp<CompPowerTrader>();
+                lines.Add($"fuel {(fuel == null ? "no comp" : fuel.HasFuel.ToString())}, power {(power == null ? "no comp" : power.PowerOn.ToString())}, " +
+                          $"broken down {stove.IsBrokenDown()}, bills {table?.BillStack.Count}");
+
+                Bill bill = table?.BillStack.Bills.FirstOrDefault();
+                if (bill != null)
+                {
+                    int matching = 0;
+                    int forbidden = 0;
+                    int unreachable = 0;
+                    foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.HaulableEver))
+                    {
+                        if (!bill.IsFixedOrAllowedIngredient(t))
+                        {
+                            continue;
+                        }
+
+                        matching++;
+                        if (t.IsForbidden(pawn))
+                        {
+                            forbidden++;
+                        }
+                        else if (!map.reachability.CanReach(pawn.Position, t, PathEndMode.Touch, TraverseParms.For(pawn)))
+                        {
+                            unreachable++;
+                        }
+                    }
+
+                    lines.Add($"bill {bill.recipe.defName}: should do now {bill.ShouldDoNow()}, pawn allowed {bill.PawnAllowedToStartAnew(pawn)}, " +
+                              $"skills ok {bill.recipe.PawnSatisfiesSkillRequirements(pawn)}, available now {bill.recipe.AvailableNow}; " +
+                              $"ingredients on the map {matching} ({forbidden} forbidden, {unreachable} unreachable)");
+                }
+
+                List<WorkGiverDef> givers = DefDatabase<WorkGiverDef>.AllDefs
+                    .Where(g => g.fixedBillGiverDefs != null && g.fixedBillGiverDefs.Contains(stove.def))
+                    .ToList();
+                if (givers.Count == 0)
+                {
+                    lines.Add($"NO WorkGiverDef lists {stoveDefName} in fixedBillGiverDefs: no colonist can be given a bill job at it");
+                }
+
+                foreach (WorkGiverDef giverDef in givers)
+                {
+                    WorkGiver_Scanner scanner = giverDef.Worker as WorkGiver_Scanner;
+                    if (scanner == null)
+                    {
+                        lines.Add($"work giver {giverDef.defName}: worker is not a scanner");
+                        continue;
+                    }
+
+                    Job job = scanner.JobOnThing(pawn, stove, false);
+                    lines.Add($"work giver {giverDef.defName} (work type {giverDef.workType?.defName}): skip {scanner.ShouldSkip(pawn, false)}, " +
+                              $"has job {scanner.HasJobOnThing(pawn, stove, false)}, job {(job == null ? "none" : job.def.defName)}");
+                }
+            }
+            catch (Exception e)
+            {
+                lines.Add($"the diagnosis itself failed: {e.GetType().Name}: {e.Message}");
+            }
+
+            return string.Join(" | ", lines);
+        }
+
+        [Then("Malay Themed Expansion Renew: {string} is offered a bill job at the {string}")]
+        public void OfferedBillJob(PickleContext ctx, string nickname, string stoveDefName)
+        {
+            Pawn pawn = Colonist(ctx, nickname);
+            Thing stove = Building(ctx, stoveDefName);
+            bool offered = DefDatabase<WorkGiverDef>.AllDefs
+                .Where(g => g.fixedBillGiverDefs != null && g.fixedBillGiverDefs.Contains(stove.def))
+                .Select(g => g.Worker as WorkGiver_Scanner)
+                .Any(s => s != null && s.JobOnThing(pawn, stove, false) != null);
+            ctx.Assert(offered, $"no work giver offers {nickname} a bill job at the {stoveDefName}: {Diagnose(ctx, nickname, stoveDefName)}");
+        }
+
+        [When("Malay Themed Expansion Renew: I wait for the bills of the {string} to finish, explaining why {string} does not", TimeoutSeconds = 150f)]
+        public async Task WaitForBillsExplained(PickleContext ctx, string stoveDefName, string nickname)
+        {
+            Building_WorkTable table = Building(ctx, stoveDefName) as Building_WorkTable;
+            ctx.Assert(table != null, $"the {stoveDefName} is not a work table");
+            try
+            {
+                await ctx.WaitUntil(() => table.BillStack.Count == 0, 120f);
+            }
+            catch (TimeoutException)
+            {
+                ctx.Assert(false, $"the bill at the {stoveDefName} was not finished after 120 s: {Diagnose(ctx, nickname, stoveDefName)}");
+            }
+        }
+
         // ------------------------------------------------------------------ the stove
 
         [Given("Malay Themed Expansion Renew: the {string} is fuelled")]
