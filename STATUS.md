@@ -42,7 +42,7 @@ remaining:
     `Mod/Patches/Stoves.xml` adds both stoves to vanilla `DoBillsCook` (guarded, idempotent), 41 technical
     checks pass. The vanilla wood stove control fails differently ("should do now False" at hour 18, 2 ingredients,
     Jet wandering): suite setup suspect (bill/ingredient count), not the mod; read before replaying.
-    Replay of `02-cooking` on the fix: next, small ticket.
+    Replay of `02-cooking` on the fix `19b27b5`: ticket `20261102-212636-600-8fda` queued 2026-11-02 (filter `02-cooking::Malay stove`, 9 expected; the queue shows tests=15, check scenarios played at RUN_DONE; evidence `Tests/Pickle/Inbox/cooking-fix-19b27b5`).
     Pending owner decision: delete the red `Tests/Pickle/Evidence/cooking-*` folders (203 MB, no RELEASE.md), keeping the newest.
     The `playTests` gate stays closed until each is replayed green.
   - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
