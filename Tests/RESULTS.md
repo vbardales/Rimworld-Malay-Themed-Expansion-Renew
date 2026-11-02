@@ -1,15 +1,17 @@
 # Technical test results
 
-Run: 2026-10-26T04:15:02.3058001+01:00
-HEAD: 52f9061b27aaa848be2582b1fc5c7e84486a625a
+Run: 2026-11-02T21:25:29.9959442+01:00
+HEAD: f03547cc4bcd0f536f7f132d80f6e04989f95554
 Scope: working tree; DOM simulation, not RimWorld runtime.
 
-Passed: 37
+Passed: 41
 
 PASS: XML parses: About\About.xml
 PASS: XML parses: Languages\French\DefInjected\JobDef\MalayFix.xml
 PASS: XML parses: Patches\JoyGivers.xml
 PASS: XML parses: Patches\Stoves.xml
+PASS: Both Malay stoves listed once in the cooking work giver
+PASS: Vanilla stoves kept in the cooking work giver
 PASS: Both problematic stove extensions removed
 PASS: Unrelated extension preserved
 PASS: Explicit cooking recipe preserved
@@ -34,7 +36,9 @@ PASS: Installed target: NSTRElectricDapur
 PASS: Installed target: NSTRDamHaji
 PASS: Installed target: NSTRWeaveSpot
 PASS: Installed target: NSTRMade_Weave
+PASS: Installed stoves listed in the cooking work giver
 PASS: Installed upstream receives both providers
+PASS: Installed Dapur loses the unresolved extension
 PASS: Job reference: MalayFix_Play_DamHaji
 PASS: Building reference: NSTRDamHaji
 PASS: Job reference: MalayFix_Weave
@@ -54,7 +58,7 @@ AB7A765B9888F4B368067F274333C140F011A524F07787FF7CDE9624BC7930FA  Mod\About\Abou
 BE99958C2FC3EBF9ED7D81A5D701B6680944827CC339E532537FC1999D3527AC  Mod\Languages\French\DefInjected\JobDef\MalayFix.xml
 AE6AE5FA894C78BB5C5B661AC6B51A86CEED7B5D596F2A7B2981218B16B26A94  Mod\LICENSE
 13F2BB1AAF90B8BF71860B6DBF78888341F5B4BCCC4F18680EFC27B56021FD1B  Mod\Patches\JoyGivers.xml
-2ACF855870599ABFCC6A7AF493572E3EC93150754A6E43DF7248DC7528EEE0A2  Mod\Patches\Stoves.xml
+9E43EBA8791CBE207D9360A22E60DD5B8950E4ECF79FACCC30E04712963A6BC2  Mod\Patches\Stoves.xml
 
 ## Installed upstream fixture hashes
 

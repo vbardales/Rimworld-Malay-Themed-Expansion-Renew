@@ -7,4 +7,31 @@
       <xpath>Defs/ThingDef[defName="NSTRDapur" or defName="NSTRElectricDapur"]/modExtensions/li[@Class="VEF.Buildings.RecipeInheritanceExtension"]</xpath>
     </match>
   </Operation>
+
+  <!-- A stove only takes a bill job when a work giver lists it: the original relied on the removed extension for that.
+       List each Malay stove in the vanilla cooking work giver, only when the stove exists and is not already listed. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="NSTRDapur"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs[li="NSTRDapur"]</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs</xpath>
+        <value>
+          <li>NSTRDapur</li>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="NSTRElectricDapur"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs[li="NSTRElectricDapur"]</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs</xpath>
+        <value>
+          <li>NSTRElectricDapur</li>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
 </Patch>

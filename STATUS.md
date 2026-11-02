@@ -36,16 +36,22 @@ remaining:
     `CookMealSimple` alone (2026-10-15) and the full suite (2026-10-16, 9 of 9): "no MealSimple was made; the map
     held 0 before and 0 after". Capture at midnight (0h, dark): Jet idle outdoors at the far left, no stove nor
     field in view. Cause not established; the field and stove are not where Jet is, or Jet does not path to them.
-    Diagnosis + vanilla-stove control `fba7ae9`: ticket `20261026-041611-036-c4fb` filed 2026-10-26 (10 scenarios, `Tests/Pickle/Inbox/cooking-diag-fba7ae9`).
-    Pending owner decision: delete the red `Tests/Pickle/Evidence/cooking-*` folders (203 MB, no RELEASE.md), keeping the newest; do it after the run is read.
+    Diagnosis + vanilla-stove control `fba7ae9`: ticket `20261026-041611-036-c4fb` ran 2026-11-02, read: 0 of 10.
+    CAUSE FOUND: 9 Malay scenarios fail "NO WorkGiverDef lists NSTRDapur in fixedBillGiverDefs": the
+    original relied on the removed VEF `RecipeInheritanceExtension` to get the stove a work giver. Fix:
+    `Mod/Patches/Stoves.xml` adds both stoves to vanilla `DoBillsCook` (guarded, idempotent), 41 technical
+    checks pass. The vanilla wood stove control fails differently ("should do now False" at hour 18, 2 ingredients,
+    Jet wandering): suite setup suspect (bill/ingredient count), not the mod; read before replaying.
+    Replay of `02-cooking` on the fix: next, small ticket.
+    Pending owner decision: delete the red `Tests/Pickle/Evidence/cooking-*` folders (203 MB, no RELEASE.md), keeping the newest.
     The `playTests` gate stays closed until each is replayed green.
   - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
     it, so it replays in the final non-regression pass.
   - unverified: electric stove cooking and a save from before the patch are not played; listed not
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
-session:      local_bd2333eb-933a-48f0-afa2-98d553a01809
-updated:      2026-10-15, audit replayed to playTests, protocols read
-protocols_read_sha: 43dd90d4b7873c500347fba1be01275a48d5795b
+session:      local_ddb1c844-84b0-4a22-ac93-a8d2de60c63a
+updated:      2026-11-02, cooking cause found (stoves absent from DoBillsCook), patch written, protocols read
+protocols_read_sha: 3b132b8acf11e30e2b3b160d6b2045bdc657e087
 social_preview_sha256: 491c4e290bdde3a5b095e8eae971e874d65d8235620086edbe9f5b7277ee6c16
 ---
 

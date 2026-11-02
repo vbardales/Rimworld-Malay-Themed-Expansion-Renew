@@ -30,8 +30,10 @@ function Apply-Patches([xml]$target){
  }
 }
 foreach($file in Get-ChildItem $mod -Recurse -Filter *.xml){$null=[xml](Get-Content $file.FullName -Raw);Assert $true "XML parses: $($file.FullName.Substring($mod.Length+1))"}
-$x=[xml]'<Defs><ThingDef><defName>NSTRDapur</defName><recipes><li>CookMealSimple</li></recipes><modExtensions><li Class="VEF.Buildings.RecipeInheritanceExtension"/><li Class="Other.Extension"/></modExtensions></ThingDef><ThingDef><defName>NSTRElectricDapur</defName><modExtensions><li Class="VEF.Buildings.RecipeInheritanceExtension"/></modExtensions></ThingDef><ThingDef><defName>NSTRDamHaji</defName></ThingDef><ThingDef><defName>NSTRWeaveSpot</defName></ThingDef></Defs>'
+$x=[xml]'<Defs><ThingDef><defName>NSTRDapur</defName><recipes><li>CookMealSimple</li></recipes><modExtensions><li Class="VEF.Buildings.RecipeInheritanceExtension"/><li Class="Other.Extension"/></modExtensions></ThingDef><ThingDef><defName>NSTRElectricDapur</defName><modExtensions><li Class="VEF.Buildings.RecipeInheritanceExtension"/></modExtensions></ThingDef><ThingDef><defName>NSTRDamHaji</defName></ThingDef><ThingDef><defName>NSTRWeaveSpot</defName></ThingDef><WorkGiverDef><defName>DoBillsCook</defName><fixedBillGiverDefs><li>ElectricStove</li><li>FueledStove</li></fixedBillGiverDefs></WorkGiverDef></Defs>'
 Apply-Patches $x
+Assert ($x.SelectNodes('//WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs/li[.="NSTRDapur"]').Count -eq 1 -and $x.SelectNodes('//WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs/li[.="NSTRElectricDapur"]').Count -eq 1) 'Both Malay stoves listed once in the cooking work giver'
+Assert ($x.SelectNodes('//WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs/li').Count -eq 4) 'Vanilla stoves kept in the cooking work giver'
 Assert ($x.SelectNodes('//modExtensions/li[@Class="VEF.Buildings.RecipeInheritanceExtension"]').Count -eq 0) 'Both problematic stove extensions removed'
 Assert ($x.SelectNodes('//modExtensions/li[@Class="Other.Extension"]').Count -eq 1) 'Unrelated extension preserved'
 Assert ($x.SelectNodes('//recipes/li[text()="CookMealSimple"]').Count -eq 1) 'Explicit cooking recipe preserved'
@@ -71,8 +73,12 @@ foreach($file in $upstreamFiles){
  foreach($node in $part.DocumentElement.ChildNodes){if($node.NodeType -eq 'Element'){[void]$live.DocumentElement.AppendChild($live.ImportNode($node,$true))}}
 }
 foreach($id in 'NSTRDapur','NSTRElectricDapur','NSTRDamHaji','NSTRWeaveSpot','NSTRMade_Weave'){Assert ($live.SelectNodes('Defs/*[defName="'+$id+'"]').Count -eq 1) "Installed target: $id"}
+$core=[xml]'<d><WorkGiverDef><defName>DoBillsCook</defName><fixedBillGiverDefs><li>ElectricStove</li><li>FueledStove</li></fixedBillGiverDefs></WorkGiverDef></d>'
+[void]$live.DocumentElement.AppendChild($live.ImportNode($core.DocumentElement.FirstChild,$true))
 Apply-Patches $live
+Assert ($live.SelectNodes('Defs/WorkGiverDef[defName="DoBillsCook"]/fixedBillGiverDefs/li[starts-with(.,"NSTR")]').Count -eq 2) 'Installed stoves listed in the cooking work giver'
 Assert ($live.SelectNodes('Defs/JoyGiverDef[starts-with(defName,"MalayFix_")]').Count -eq 2) 'Installed upstream receives both providers'
+Assert ($live.SelectNodes('Defs/ThingDef[defName="NSTRDapur"]/modExtensions/li[@Class="VEF.Buildings.RecipeInheritanceExtension"]').Count -eq 0) 'Installed Dapur loses the unresolved extension'
 foreach($giver in $live.SelectNodes('Defs/JoyGiverDef[starts-with(defName,"MalayFix_")]')){
  Assert ($live.SelectNodes('Defs/JobDef[defName="'+$giver.jobDef+'"]').Count -eq 1) "Job reference: $($giver.defName)"
  foreach($building in $giver.thingDefs.li){Assert ($live.SelectNodes('Defs/ThingDef[defName="'+$building+'"]').Count -eq 1) "Building reference: $building"}

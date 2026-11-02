@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- List the two Malay stoves in the vanilla `DoBillsCook` work giver. The original relied on the
+  removed Vanilla Expanded extension for that, so once the extension was gone no colonist was ever
+  offered a bill job at either stove (Pickle diagnosis `20261026-041611-036-c4fb`).
+
 - Drop the `renew` suffix from the package ID: `nelim.malaythemedexpansionrenew` becomes
   `nelim.malaythemedexpansion`. The displayed name and repository keep `Renew`.
 - Add the ModIcon to the bottom-left corner of the preview, tilted 30 degrees and pushed past the
