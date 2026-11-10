@@ -7,7 +7,7 @@ packageId:    nelim.malaythemedexpansion
 repo:         Rimworld-Malay-Themed-Expansion-Renew
 visibility:   public
 detached:     yes
-workflow_stage: playTests[0.1.0]
+workflow_stage: declareDependencies[0.1.0]
 licence:      open
 licence_at:   LICENSE and ATTRIBUTION.md; MIT applies only to this patch
 upstream_mod_remotes: N/A
@@ -22,6 +22,11 @@ xml_tests: complete
 runtime_validation: unverified
 audit_revision: 340e28e
 remaining:
+  - open (replay 2026-11-10, AUDIT 4.g): no dated record of dependencies, optional integrations and DLC with
+    revision in this file (only the field `dependencies: declared`); the 2026-10-12 cut dropped it. Redo at
+    `declareDependencies`: Malay NSTR.Malay.Themed.Expansion (hard, Workshop 2884249920), VEF Core (loadAfter
+    only), Joy Rescue (optional claim in TESTING.md, no patch target), no DLC; then 5.g `Settings audit`
+    and 6.h `Translation audit` sections are also absent and must be rewritten at their stages.
   - unverified: Pickle `02-cooking` red, 9 of 9 scenarios, on `db588fa` and again on `94430a6`
     (English and French): "no NSTRNasiLemak was made; the map held 0 before and 0 after", the vanilla
     `CookMealSimple` too, the cook idle outside the room in the capture. Cause not established (suite
@@ -50,8 +55,8 @@ remaining:
   - unverified: electric stove cooking and a save from before the patch are not played; listed not
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_ddb1c844-84b0-4a22-ac93-a8d2de60c63a
-updated:      2026-11-02, cooking cause found (stoves absent from DoBillsCook), patch written, protocols read
-protocols_read_sha: 263d2102015cdfba634ad80d9dd7fa5a7b9fc15e
+updated:      2026-11-10, audit replay: 4.g dependency record missing, stage back to declareDependencies; cooking replay on 19b27b5 red 0 of 8
+protocols_read_sha: e88194bba72e60f5e5b74de59c88dd0e09b97ef0
 social_preview_sha256: 491c4e290bdde3a5b095e8eae971e874d65d8235620086edbe9f5b7277ee6c16
 ---
 
