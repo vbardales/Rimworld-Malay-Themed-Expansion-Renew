@@ -51,7 +51,7 @@ remaining:
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_ddb1c844-84b0-4a22-ac93-a8d2de60c63a
 updated:      2026-11-02, cooking cause found (stoves absent from DoBillsCook), patch written, protocols read
-protocols_read_sha: 3b132b8acf11e30e2b3b160d6b2045bdc657e087
+protocols_read_sha: 263d2102015cdfba634ad80d9dd7fa5a7b9fc15e
 social_preview_sha256: 491c4e290bdde3a5b095e8eae971e874d65d8235620086edbe9f5b7277ee6c16
 ---
 
