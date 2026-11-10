@@ -30,10 +30,11 @@ Feature: the Malay stove cooks
     And "Jet" needs "Rest" is set to 100 percent
     And "Jet" needs "Food" is set to 100 percent
     And Malay Themed Expansion Renew: "Jet" is scheduled to work all day
-    And Malay Themed Expansion Renew: an open field near "Jet" is cleared
-    And Malay Themed Expansion Renew: 100 "RawRice" is spawned in the field at (3, 3)
-    And Malay Themed Expansion Renew: 60 "Meat_Muffalo" is spawned in the field at (3, 4)
-    And Malay Themed Expansion Renew: I build a "NSTRDapur" in the field at (10, 3)
+    And Nelim's Pickle Tools: an open field near "Jet" is cleared
+    And Nelim's Pickle Tools: I create a stockpile in the field from (2, 2) to (5, 5)
+    And Nelim's Pickle Tools: 100 "RawRice" is spawned in the field at (3, 3)
+    And Nelim's Pickle Tools: 60 "Meat_Muffalo" is spawned in the field at (3, 4)
+    And Nelim's Pickle Tools: I build a "NSTRDapur" in the field at (10, 3)
     And Malay Themed Expansion Renew: the "NSTRDapur" is fuelled
     And I set "Jet" priority "Cooking" to 1
     And I set "Jet" priority "Hauling" to 0
@@ -67,9 +68,10 @@ Feature: the Malay stove cooks
     Given "Jet" skill "Cooking" is set to level 10
     And "Jet" needs "Rest" is set to 100 percent
     And "Jet" needs "Food" is set to 100 percent
-    And Malay Themed Expansion Renew: an open field near "Jet" is cleared
-    And Malay Themed Expansion Renew: 100 "RawRice" is spawned in the field at (3, 3)
-    And Malay Themed Expansion Renew: I build a "FueledStove" in the field at (10, 3)
+    And Nelim's Pickle Tools: an open field near "Jet" is cleared
+    And Nelim's Pickle Tools: I create a stockpile in the field from (2, 2) to (5, 5)
+    And Nelim's Pickle Tools: 100 "RawRice" is spawned in the field at (3, 3)
+    And Nelim's Pickle Tools: I build a "FueledStove" in the field at (10, 3)
     And Malay Themed Expansion Renew: the "FueledStove" is fuelled
     And I set "Jet" priority "Cooking" to 1
     And I set "Jet" priority "Hauling" to 0

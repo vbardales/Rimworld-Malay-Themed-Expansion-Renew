@@ -1,3 +1,5 @@
 # Joy Rescue beside the patch (TEST_SCENARIOS.md 7). Vanilla Expanded Framework first, as in the minimal pass.
 OskarPotocki.VanillaFactionsExpanded.Core 2023507013
 nelim.joyrescue path:JoyRescue/Mod
+# Pickle companion for the shared field and stockpile steps (FieldSteps.cs).
+nelim.pickletools.screenshotstudio path:PickleTools/ScreenshotStudio/Mod

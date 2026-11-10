@@ -1,3 +1,5 @@
 # Minimal pass, no optional mod. Malay Themed Expansion, the hard dependency of the mod under test, itself requires
 # Vanilla Expanded Framework, and the staging copies direct dependencies only: the framework is named here.
 OskarPotocki.VanillaFactionsExpanded.Core 2023507013
+# Pickle companion for the shared field and stockpile steps (FieldSteps.cs).
+nelim.pickletools.screenshotstudio path:PickleTools/ScreenshotStudio/Mod
