@@ -1,0 +1,13 @@
+{
+  "templateStamp": "ed4669c0a5bf",
+  "workshopId": "3806768309",
+  "packageId": "nelim.malaythemedexpansion",
+  "releaseTitle": "Malay Themed Expansion Renew {version}",
+  "requirePaths": [
+    "Patches",
+    "Languages"
+  ],
+  "forbidPaths": [],
+  "previewFile": "About/Preview.png",
+  "galleryDir": "Art/Gallery"
+}

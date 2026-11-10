@@ -20,6 +20,8 @@ desktop.ini
 # Player.log copies grow without limit. Tests/RESULTS.md is the short summary that stays
 # versioned. See STATUS.md, "Evidence retention".
 Tests/Pickle/Evidence/
+Tests/Pickle/Inbox/
+Tests/Pickle/Parked/
 evidence/
 
 # Uncompressed textures. This mod ships PNG only; a .dds here would mean a texture
