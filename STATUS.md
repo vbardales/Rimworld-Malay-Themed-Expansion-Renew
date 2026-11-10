@@ -7,7 +7,7 @@ packageId:    nelim.malaythemedexpansion
 repo:         Rimworld-Malay-Themed-Expansion-Renew
 visibility:   public
 detached:     yes
-workflow_stage: settings[0.1.0]
+workflow_stage: localize[0.1.0]
 licence:      open
 licence_at:   LICENSE and ATTRIBUTION.md; MIT applies only to this patch
 upstream_mod_remotes: N/A
@@ -22,8 +22,8 @@ xml_tests: complete
 runtime_validation: unverified
 audit_revision: 340e28e
 remaining:
-  - open (replay 2026-11-10): the `Settings audit` (5.g) and `Translation audit` (6.h) sections are absent
-    from this file since the 2026-10-12 cut; rewrite each at its own stage (`settings`, `localize`).
+  - open (replay 2026-11-10): the `Translation audit` section (6.h) is absent
+    from this file since the 2026-10-12 cut; rewrite it at `localize`.
   - unverified: Pickle `02-cooking` red, 9 of 9 scenarios, on `db588fa` and again on `94430a6`
     (English and French): "no NSTRNasiLemak was made; the map held 0 before and 0 after", the vanilla
     `CookMealSimple` too, the cook idle outside the room in the capture. Cause not established (suite
@@ -52,8 +52,8 @@ remaining:
   - unverified: electric stove cooking and a save from before the patch are not played; listed not
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_ddb1c844-84b0-4a22-ac93-a8d2de60c63a
-updated:      2026-11-10, audit replay: 4.g dependency record written, stage settings; cooking replay on 19b27b5 red 0 of 8
-protocols_read_sha: c5a67ecc1e82e8ae7965527affdd86ea26ef4193
+updated:      2026-11-10, audit replay: Settings audit written (not_applicable), stage localize; cooking replay on 19b27b5 red 0 of 8
+protocols_read_sha: c314611dce140b806a50364002a5ed98b6fb3c4c
 social_preview_sha256: 491c4e290bdde3a5b095e8eae971e874d65d8235620086edbe9f5b7277ee6c16
 ---
 
@@ -120,6 +120,25 @@ Checked against `Mod/About/About.xml` and `Mod/Patches/*.xml` read that day.
   target. `Check-OptionalCompat.ps1`: 0 patched targets, 0 declared, so no `OptionalCompat.xml`.
 - **DLC:** none; no `LoadFolders.xml`, no `IfModActive`. `supportedVersions`: 1.6.
 - **Incompatibilities:** none declared.
+
+## Settings audit — 2026-11-10, revision `1f66596` (AUDIT 5.a to 5.g, MOD_SETTINGS.md)
+
+Result: `not_applicable`. Game and integrations: RimWorld 1.6, Malay Themed Expansion required, no customization mod tested.
+
+- **Inventory (5.a).** `git ls-files Mod` holds About files, one French `DefInjected` file and two patches: no C#,
+  no `Mod` subclass, no `ModSettings`, no `MainButtonDef` (grep of `Mod/` for `MainButtonDef|ModSettings|Verse.Mod`:
+  no match). Configurable behaviour: none. The only constants (`joyDuration` 4000, `joyMaxParticipants` 2, joy kinds
+  of the two added recreation givers) copy what the original mod's buildings were meant to do; a player has no use
+  for changing them.
+- **Decision (5.b).** No settings. Adding an option would be decoration on a 153-line repair patch.
+- **Access (5.c, 5.d).** Absent by design: no entry under Mod options, no shortcut. Neither an empty page nor a
+  hidden or visible MainButton exists (same grep).
+- **Usage review (5.e).** Nothing to review: no control, no stored value, no application timing or scope.
+- **Technical tests (5.f).** `Tests/Run-Tests.ps1` run 2026-11-10 on `1f66596`: 41 PASS, 0 FAIL
+  (`Tests/RESULTS.md`), including the two patches' DOM behaviour. Scenario 6 of `Tests/TEST_SCENARIOS.md` and
+  `TESTING.md` record the justified absence. Not applicable, with reason: option values, validation, persistence,
+  migration, shortcut default and RIMMSQOL integration (no setting to hold them). In game, the absence of a
+  settings page is confirmed at `playTests` only if a scenario can show it; otherwise it stays a source fact.
 
 ## Audit — 2026-10-12, applying AUDIT.md (`340e28e`)
 
