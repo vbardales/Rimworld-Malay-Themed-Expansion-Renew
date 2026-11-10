@@ -42,7 +42,7 @@ remaining:
     `Mod/Patches/Stoves.xml` adds both stoves to vanilla `DoBillsCook` (guarded, idempotent), 41 technical
     checks pass. The vanilla wood stove control fails differently ("should do now False" at hour 18, 2 ingredients,
     Jet wandering): suite setup suspect (bill/ingredient count), not the mod; read before replaying.
-    Replay on the fix `19b27b5` (2026-11-10): 0 of 8, watchdog-timeout; every scenario "bill should do now False, DoBillsCook skip True, ingredients 3, stove reachable, Jet GotoWander"; parked in `Tests/Pickle/Parked/cooking-fix-19b27b5` (RELEASE.md). Hypothesis: no stockpile for the bill product (Eden Garden lays one). PiT shipped shared steps (`2f65e21`, FieldSteps, NOT PLAYED); suite switched to them in `1561ef7`, local field steps dropped. Ticket `20261110-143503-571-ec14` (`02-cooking::Malay stove`, tests=15) queued: on RUN_DONE read `summary.json`, then tell PiT (local_03a66e9e) the result or exact error.
+    Replay on the fix `19b27b5` (2026-11-10): 0 of 8, watchdog-timeout; every scenario "bill should do now False, DoBillsCook skip True, ingredients 3, stove reachable, Jet GotoWander"; parked in `Tests/Pickle/Parked/cooking-fix-19b27b5` (RELEASE.md). Hypothesis: no stockpile for the bill product (Eden Garden lays one). PiT shipped shared steps (`2f65e21`, FieldSteps, NOT PLAYED); suite switched to them in `1561ef7`, local field steps dropped. Ticket `20261110-143503-571-ec14` ran: RED 9 of 9 (evidence in `Tests/Pickle/Inbox/cooking-stockpile`, read, delete or park at triage). Read: FieldSteps applied (`[field] origin (115, 0, 203)`, `[stockpile-created] 16 cells`), Jet timetable Work, stove reachable; the bill itself reports "should do now False, pawn allowed True, ingredients on the map 3", DoBillsCook skip True, so Jet gets no job and wanders. PiT told, no FieldSteps defect. Recipes (upstream 2884249920, 1.6/Defs/RecipeDefs/NSTRRecipes_Meals.xml) need RawRice plus MeatRaw/AnimalProductRaw. `beb1d08` adds a "bill detail" diagnostic line (type, suspended, repeat mode and count, store mode, hp and quality range, ingredient radius). Ticket `20261110-162010-916-128e` (`02-cooking::vanilla wood stove`, sans-facultatifs, evidence `Tests/Pickle/Inbox/cooking-bill`) queued: on RUN_DONE read `summary.json` and the "bill detail" line, find why `ShouldDoNow()` is False, fix, replay.
     The earlier Evidence purge question is moot: the red cooking-* folders under `Tests/Pickle/Evidence/` stay until this replay is read.
     The `playTests` gate stays closed until each is replayed green.
   - unverified: Joy Rescue scenario (`06`) green only on `690cad2`; the step assembly changed after
@@ -51,7 +51,7 @@ remaining:
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_ddb1c844-84b0-4a22-ac93-a8d2de60c63a
 updated:      2026-11-10, audit replay: 7.a-7.i read (Rule-OwnValues validated by Audit, Test-Mod 6 of 6), stage playTests; 02-cooking red on 19b27b5
-protocols_read_sha: 8008550519693c954ffb16f6ffb9d1a57a927243
+protocols_read_sha: 08d847f48e6de0a91f668a52541d91cb34cf9aef
 social_preview_sha256: 491c4e290bdde3a5b095e8eae971e874d65d8235620086edbe9f5b7277ee6c16
 ---
 
