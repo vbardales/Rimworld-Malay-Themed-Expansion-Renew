@@ -1,36 +1,14 @@
 {
   "panel": {
     "title": "Malay Themed Expansion Renew",
-    "titleSize": 42,
     "titleParts": [
-      {
-        "text": "Malay Themed"
-      },
-      {
-        "break": true
-      },
-      {
-        "text": "Expansion"
-      },
-      {
-        "break": true
-      },
-      {
-        "text": "Renew",
-        "scale": 0.65,
-        "font": "ui",
-        "color": "secondary"
-      }
+      { "text": "Malay Themed" },
+      { "text": "Expansion Renew", "suffix": true }
     ],
-    "copyLines": [
-      "Restores Malay cooking",
-      "and recreation."
-    ]
+    "description": "Restores Malay cooking and recreation."
   },
-  "backgroundFile": "Preview-source.png",
-  "echo": {
-    "file": "echo-preview.png"
-  },
+  "background": { "file": "Preview-source.png" },
+  "echo": { "file": "echo-preview.png" },
   "icon": {
     "file": "ModIcon-source.png",
     "corner": "bottom-left",
