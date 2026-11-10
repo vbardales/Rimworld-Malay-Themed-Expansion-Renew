@@ -7,7 +7,7 @@ packageId:    nelim.malaythemedexpansion
 repo:         Rimworld-Malay-Themed-Expansion-Renew
 visibility:   public
 detached:     yes
-workflow_stage: writeTests[0.1.0]
+workflow_stage: playTests[0.1.0]
 licence:      open
 licence_at:   LICENSE and ATTRIBUTION.md; MIT applies only to this patch
 upstream_mod_remotes: N/A
@@ -50,8 +50,8 @@ remaining:
   - unverified: electric stove cooking and a save from before the patch are not played; listed not
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_ddb1c844-84b0-4a22-ac93-a8d2de60c63a
-updated:      2026-11-10, audit replay: Translation audit written, stage writeTests; cooking replay on 19b27b5 red 0 of 8
-protocols_read_sha: e256636a6f65e919c866448cae742a94e2c3ab28
+updated:      2026-11-10, audit replay: 7.a-7.i read (Rule-OwnValues validated by Audit, Test-Mod 6 of 6), stage playTests; 02-cooking red on 19b27b5
+protocols_read_sha: 8008550519693c954ffb16f6ffb9d1a57a927243
 social_preview_sha256: 491c4e290bdde3a5b095e8eae971e874d65d8235620086edbe9f5b7277ee6c16
 ---
 
