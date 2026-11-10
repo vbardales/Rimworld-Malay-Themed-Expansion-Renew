@@ -7,7 +7,7 @@ packageId:    nelim.malaythemedexpansion
 repo:         Rimworld-Malay-Themed-Expansion-Renew
 visibility:   public
 detached:     yes
-workflow_stage: declareDependencies[0.1.0]
+workflow_stage: settings[0.1.0]
 licence:      open
 licence_at:   LICENSE and ATTRIBUTION.md; MIT applies only to this patch
 upstream_mod_remotes: N/A
@@ -22,11 +22,8 @@ xml_tests: complete
 runtime_validation: unverified
 audit_revision: 340e28e
 remaining:
-  - open (replay 2026-11-10, AUDIT 4.g): no dated record of dependencies, optional integrations and DLC with
-    revision in this file (only the field `dependencies: declared`); the 2026-10-12 cut dropped it. Redo at
-    `declareDependencies`: Malay NSTR.Malay.Themed.Expansion (hard, Workshop 2884249920), VEF Core (loadAfter
-    only), Joy Rescue (optional claim in TESTING.md, no patch target), no DLC; then 5.g `Settings audit`
-    and 6.h `Translation audit` sections are also absent and must be rewritten at their stages.
+  - open (replay 2026-11-10): the `Settings audit` (5.g) and `Translation audit` (6.h) sections are absent
+    from this file since the 2026-10-12 cut; rewrite each at its own stage (`settings`, `localize`).
   - unverified: Pickle `02-cooking` red, 9 of 9 scenarios, on `db588fa` and again on `94430a6`
     (English and French): "no NSTRNasiLemak was made; the map held 0 before and 0 after", the vanilla
     `CookMealSimple` too, the cook idle outside the room in the capture. Cause not established (suite
@@ -55,8 +52,8 @@ remaining:
   - unverified: electric stove cooking and a save from before the patch are not played; listed not
     applicable in `TESTING.md`, a justification proposed by the session for Virginie to confirm.
 session:      local_ddb1c844-84b0-4a22-ac93-a8d2de60c63a
-updated:      2026-11-10, audit replay: 4.g dependency record missing, stage back to declareDependencies; cooking replay on 19b27b5 red 0 of 8
-protocols_read_sha: e88194bba72e60f5e5b74de59c88dd0e09b97ef0
+updated:      2026-11-10, audit replay: 4.g dependency record written, stage settings; cooking replay on 19b27b5 red 0 of 8
+protocols_read_sha: c5a67ecc1e82e8ae7965527affdd86ea26ef4193
 social_preview_sha256: 491c4e290bdde3a5b095e8eae971e874d65d8235620086edbe9f5b7277ee6c16
 ---
 
@@ -108,6 +105,21 @@ but a living source, `forbidden` a written refusal, `original` owing nothing to 
 
 `remaining`: `feature` for something missing from a first release, `defect` for a known fault
 left unfixed, `unverified` for what could not be checked.
+
+## Dependencies — 2026-11-10, revision `b998d8e` (AUDIT 4.g)
+
+Checked against `Mod/About/About.xml` and `Mod/Patches/*.xml` read that day.
+
+- **Required (`modDependencies`):** Malay Themed Expansion, `NSTR.Malay.Themed.Expansion`, Workshop 2884249920
+  (Shanaki97). Every patch targets its defs.
+- **`loadAfter`:** `Ludeon.RimWorld`, `OskarPotocki.VanillaFactionsExpanded.Core`, `NSTR.Malay.Themed.Expansion`.
+  Vanilla Expanded Framework is not required: `Stoves.xml` only names its removed extension class
+  `VEF.Buildings.RecipeInheritanceExtension` in an xpath to delete it, guarded on the node itself.
+- **Optional integrations:** none patched. Joy Rescue (`nelim.joyrescue`) is a test-only claim (scenario 06,
+  TESTING.md): `JoyGivers.xml` adds a provider only when the building has none, no `MayRequire`, no mod-specific
+  target. `Check-OptionalCompat.ps1`: 0 patched targets, 0 declared, so no `OptionalCompat.xml`.
+- **DLC:** none; no `LoadFolders.xml`, no `IfModActive`. `supportedVersions`: 1.6.
+- **Incompatibilities:** none declared.
 
 ## Audit — 2026-10-12, applying AUDIT.md (`340e28e`)
 
