@@ -12,9 +12,9 @@ Scenarios are the ones of `TEST_SCENARIOS.md`; this file says which run in the g
 | 3 Dam haji | `03-dam-haji`, `07`/`08` | The giver, the job, joy gained, the report in the pass language. |
 | 4 Weaving | `04-weaving`, `07`/`08` | Same, plus the ninth joy kind `NSTRMade_Weave` being credited. |
 | 5 Existing save | `05-existing-save`, partly | Save and reload with the patch active. A save written *before* the patch is not made here. |
-| 6 No configuration UI | offline, `Tests/Run-Tests.ps1` | The mod has no assembly, no `MainButtonDef` and no settings class: readable in the sources. |
+| 6 No configuration UI | offline, shared `Check-SettingsContract` | The mod has no assembly, no `MainButtonDef` and no settings class: readable in the sources. |
 | 7 Joy Rescue | `06-joy-rescue`, `@requires:nelim.joyrescue` | One provider per building with Joy Rescue loaded. |
-| 8 Dependency absent | offline | The dependency declaration is checked in the sources, and the empty-upstream case by `Run-Tests.ps1`. The game's reaction to a missing dependency is the game's, not the mod's (AUDIT.md, "On ne teste pas le jeu"). |
+| 8 Dependency absent | offline | The dependency declaration is checked in the sources, and the empty-upstream case by `Tests/Rule-OwnValues.ps1`. The game's reaction to a missing dependency is the game's, not the mod's (AUDIT.md, "On ne teste pas le jeu"). |
 
 Not covered by any scenario, and left to a person: the **electric** stove cooking (needs a power net), and loading a
 save written before the patch existed.

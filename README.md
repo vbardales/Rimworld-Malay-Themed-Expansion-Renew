@@ -107,12 +107,13 @@ The distribution is Mod/. No C# compilation is needed. There are no useful playe
 these are fixed repairs, so no empty mod-options page or MainButtons shortcut is provided.
 English job reports are native Def values; French translations are in Languages/French.
 
-Run the automated XML/DOM regression suite from the repository root:
+Run the automated XML/DOM regression suite from the repository root (shared checks first, then `Tests/Rule-OwnValues.ps1`):
 
-    pwsh -File Tests/Run-Tests.ps1
+    pwsh -File Tests/Test-Mod.ps1
 
-The suite requires the installed upstream 1.6 XML; use -Upstream to override its Defs path.
-Tests/RESULTS.md records the tested working-tree hashes and fixture hashes.
+The own-values rule replays the patches on fixtures and on the installed upstream 1.6 XML (skipped loudly when it is
+absent). Run it alone with `pwsh -File Tests/Rule-OwnValues.ps1 -ModRoot . -SharedDir <protocols>/scripts`;
+`-Upstream` overrides the Defs path.
 The suite verifies patch transformations, idempotence, absent/already-fixed targets,
 translation tokens and distribution metadata; it does not run RimWorld's game loop.
 
@@ -120,6 +121,5 @@ Run the shared translation verifier with both this Mod/ and upstream 1.6/ as Tar
 Tests/translation-check.txt records the latest output. TEST_SCENARIOS.md describes
 the functional scenarios; `Tests/Pickle/` plays them in the game and `TESTING.md` lists the passes, the evidence kept and what is not applicable.
 
-The Preview is rendered from `Art/Preview.config.json`, `Art/Preview-source.png`, `Art/echo-preview.png` and `Art/ModIcon-source.png` by the shared renderer (`node ../scripts/Render-Preview.cjs` in the protocols repository; it needs Node.js, Playwright and Chrome). Run `Tests/Run-Tests.ps1` afterwards to refresh the delivered-file hashes.
-
+The Preview is rendered from `Art/Preview.config.json`, `Art/Preview-source.png`, `Art/echo-preview.png` and `Art/ModIcon-source.png` by the shared renderer (`node ../scripts/Render-Preview.cjs` in the protocols repository; it needs Node.js, Playwright and Chrome).
 See ATTRIBUTION.md for studied third-party work and the licence boundary.

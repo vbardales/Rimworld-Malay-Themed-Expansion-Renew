@@ -2,8 +2,7 @@
 
 ## What exists today
 
-- `Tests/Run-Tests.ps1`: automated XML/DOM checks, off-game. `Tests/RESULTS.md` records the last
-  run (37 checks). It is the short summary kept in git, as AGENTS.md asks.
+- `Tests/Rule-OwnValues.ps1`: automated XML/DOM checks, off-game (patch fixtures, installed upstream replay, About identity, French reports), run after the shared checks by the generated `Tests/Test-Mod.ps1`. Proof: the run line in `docs/runs/history.md`.
 - `scripts/Check-Steps.ps1 -Mod MalayThemedExpansionRenew` (protocols repository): offline check that every step line of the suite resolves to
   exactly one expression. Run it before any Pickle request.
 - `TEST_SCENARIOS.md`: the eight functional scenarios, each with its precondition, action and
@@ -45,15 +44,15 @@ AUDIT.md, "On ne teste pas ce que le mod ne modifie pas" and "On ne teste pas le
   serialised. `05-existing-save` saves and reloads with the patch active. Proposed by the session;
   Virginie may overrule.
 - **The game's reaction to a missing dependency** (scenario 8). The game's own work. The mod
-  answers for what it declares, checked in the sources and by `Run-Tests.ps1`.
+  answers for what it declares, checked in the sources and by `Rule-OwnValues.ps1`.
 - **Settings, shortcut, persistence** (scenario 6). The mod has none; the absence of a page and a
-  shortcut is read in the sources and checked by `Run-Tests.ps1`.
+  shortcut is read in the sources and checked by the shared `Check-SettingsContract`.
 
 ## Evidence retention
 
 Two things about a test run are worth keeping, and only one of them in git.
 
-- `Tests/RESULTS.md` and one line per run in `docs/runs/history.md`: versioned. They are the proof
+- One line per run in `docs/runs/history.md`: versioned. It is the proof
   that survives.
 - The report of the latest run per pass, on disk under `Tests/Pickle/Evidence/<pass>-<sha>/`,
   git-ignored. Keep only `summary.json`, `junit.xml`, `Player.log`, the `@review` captures that

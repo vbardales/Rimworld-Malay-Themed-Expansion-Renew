@@ -132,8 +132,8 @@ Result: `not_applicable`. Game and integrations: RimWorld 1.6, Malay Themed Expa
 - **Access (5.c, 5.d).** Absent by design: no entry under Mod options, no shortcut. Neither an empty page nor a
   hidden or visible MainButton exists (same grep).
 - **Usage review (5.e).** Nothing to review: no control, no stored value, no application timing or scope.
-- **Technical tests (5.f).** `Tests/Run-Tests.ps1` run 2026-11-10 on `1f66596`: 41 PASS, 0 FAIL
-  (`Tests/RESULTS.md`), including the two patches' DOM behaviour. Scenario 6 of `Tests/TEST_SCENARIOS.md` and
+- **Technical tests (5.f).** `Tests/Rule-OwnValues.ps1` run 2026-11-10 (replaces `Run-Tests.ps1`): all rules pass
+  (mutation proof: a broken stove xpath turns two rules red), including the two patches DOM behaviour. Scenario 6 of `Tests/TEST_SCENARIOS.md` and
   `TESTING.md` record the justified absence. Not applicable, with reason: option values, validation, persistence,
   migration, shortcut default and RIMMSQOL integration (no setting to hold them). In game, the absence of a
   settings page is confirmed at `playTests` only if a scenario can show it; otherwise it stays a source fact.
