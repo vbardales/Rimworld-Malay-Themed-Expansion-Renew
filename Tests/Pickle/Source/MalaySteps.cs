@@ -310,6 +310,8 @@ namespace MalayThemedExpansion.PickleSteps
                         }
                     }
 
+                    Bill_Production prod = bill as Bill_Production;
+                    lines.Add($"bill detail: type {bill.GetType().Name}, suspended {bill.suspended}, repeat {prod?.repeatMode?.defName} x{prod?.repeatCount}, store {prod?.GetStoreMode()}, ageRange-hp {prod?.hpRange}, quality {prod?.qualityRange}, ingredient radius {prod?.ingredientSearchRadius}, allowed pawns {bill.PawnAllowedToStartAnew(pawn)}");
                     lines.Add($"bill {bill.recipe.defName}: should do now {bill.ShouldDoNow()}, pawn allowed {bill.PawnAllowedToStartAnew(pawn)}, " +
                               $"skills ok {bill.recipe.PawnSatisfiesSkillRequirements(pawn)}, available now {bill.recipe.AvailableNow}; " +
                               $"ingredients on the map {matching} ({forbidden} forbidden, {unreachable} unreachable)");
